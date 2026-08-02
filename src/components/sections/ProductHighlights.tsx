@@ -10,9 +10,13 @@ const ProductHighlights = () => {
 
   return (
     <section className="product-highlights">
-      <div className="highlight-card">
-        <h3>Precision Point</h3>
-        <p>The aerodynamic tungsten point ensures a stable flight path and unmatched accuracy, hitting the mark every time.</p>
+      <div className="highlight-grid">
+        {highlights.map((item) => (
+          <div className="highlight-card" key={item.title}>
+            <h3>{item.title}</h3>
+            <p>{item.description}</p>
+          </div>
+        ))}
       </div>
     </section>
   )
