@@ -1,23 +1,10 @@
 import './ProductHighlights.css';
 
 const ProductHighlights = () => {
-  // In a real implementation, this would come from a CMS or config
-  const highlights = [
-    { title: 'Carbon Core', description: 'Unmatched straightness and durability.' },
-    { title: 'Aero-Fletch', description: 'Minimized drag for maximum velocity.' },
-    { title: 'Tungsten Point', description: 'Superior penetration and accuracy.' },
-  ];
-
   return (
     <section className="product-highlights">
-      <div className="highlight-grid">
-        {highlights.map((item) => (
-          <div className="highlight-card" key={item.title}>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </div>
-        ))}
-      </div>
+      <h2>Tungsten Point</h2>
+      <p>Precision-machined tungsten alloy concentrates mass at the very tip, driving deeper penetration and a flatter, more predictable flight path with every shot.</p>
     </section>
   )
 }
