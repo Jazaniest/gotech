@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber';
   import { Environment } from '@react-three/drei';
   import { Suspense } from 'react';
   import Arrow from './Arrow';
+  import HeroArrows from './HeroArrows';
   import Lighting from './Lighting';
 
   const Scene = () => {
@@ -10,6 +11,7 @@ import { Canvas } from '@react-three/fiber';
         <Suspense fallback={null}>
           <Lighting />
           <Arrow />
+          <HeroArrows />
           <Environment preset="studio" />
         </Suspense>
       </Canvas>
