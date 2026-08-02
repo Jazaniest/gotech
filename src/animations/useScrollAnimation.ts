@@ -5,6 +5,15 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
+
+interface UseScrollAnimationProps {
+  groupRef: React.RefObject<THREE.Group>;
+  shaftRef: React.RefObject<THREE.Mesh>;
+  pointRef: React.RefObject<THREE.Mesh>;
+  nockRef: React.RefObject<THREE.Mesh>;
+  vanesRef: React.RefObject<THREE.Group>;
+}
+
 gsap.registerPlugin(ScrollTrigger);
 
 // Arrow selalu di pose diagonal ini - yang bergerak antar section cuma
@@ -20,7 +29,7 @@ const PART_Z = {
   nock: -4,
 };
 
-export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vanesRef }) => {
+export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vanesRef }: UseScrollAnimationProps) => {
   const { camera } = useThree();
 
   useLayoutEffect(() => {
@@ -41,33 +50,78 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       const aim = () => camera.lookAt(target.x, target.y, target.z);
       aim();
 
+      // Checkpoint kamera+target di tiap "pemberhentian" scroll, dihitung
+      // SEKALI di awal - deterministik, tidak tergantung state runtime.
+      // checkpoints[0] = pose awal Hero, checkpoint terakhir = balik lagi
+      // ke pose awal itu di CTAFooter. Tiap section men-tween dari
+      // checkpoint SEBELUMNYA ke checkpoint miliknya sendiri lewat
+      // fromTo() eksplisit, BUKAN to().
+      //
+      // Kenapa ini penting: to() tidak punya nilai awal eksplisit - GSAP
+      // mengambilnya dari state kamera "live" pada saat tween itu pertama
+      // kali dirender, yang bisa berbeda-beda tergantung kapan
+      // ScrollTrigger.refresh() jalan, seberapa cepat user scroll, dan
+      // section mana yang duluan masuk viewport. Karena 5 ScrollTrigger
+      // di sini semuanya mengubah camera.position yang SAMA, nilai awal
+      // itu gampang "salah tangkap" -> muncul sebagai blink pas scroll
+      // turun, dan lebih parah lagi pas scroll naik (tween ditarik mundur
+      // ke nilai awal yang sudah salah dari awal). fromTo() dengan
+      // checkpoint tetap ini menghilangkan ambiguitas itu sepenuhnya -
+      // dari arah manapun discroll, titik awal & akhir tiap section
+      // selalu pasti sama.
+      const checkpoints = [
+        { cam: { x: 0, y: 0, z: 12 }, target: { x: 0, y: 0, z: 0 } }, // 1. Hero
+        {
+          cam: localToWorld(1.8, 1, PART_Z.shaft + 2.2),
+          target: localToWorld(0, 0, PART_Z.shaft),
+        }, // 2. BrandStory - orbit dekat ke tengah shaft
+        {
+          cam: localToWorld(1.3, 0.7, PART_Z.point + 2.6),
+          target: localToWorld(0, 0, PART_Z.point),
+        }, // 3. ProductHighlights - dorong dekat ke ujung point
+        {
+          cam: localToWorld(-1.6, 0.9, PART_Z.vanes + 2.8),
+          target: localToWorld(0, 0, PART_Z.vanes - 0.4),
+        }, // 4. Specs - close-up ke vanes dengan sudut miring
+        {
+          cam: localToWorld(1.2, 0.6, PART_Z.nock + 2.6),
+          target: localToWorld(0, 0, PART_Z.nock),
+        }, // 5. Gallery - close-up ke nock
+        { cam: { x: 0, y: 0, z: 12 }, target: { x: 0, y: 0, z: 0 } }, // 6. CTAFooter - balik ke pose awal
+      ];
+
       // Satu ScrollTrigger per section, trigger-nya elemen section itu
       // sendiri - jadi timing SELALU pas kapan section itu tampil di
       // layar, berapa pun tinggi section-nya. 'top top' -> 'bottom top'
       // dipilih supaya window tiap section pas 1 layar penuh dan
-      // BERSAMBUNGAN tanpa tumpang tindih dengan section tetangga
-      // (kalau overlap, dua tween akan rebutan properti camera.position
-      // yang sama - persis bug yang kita perbaiki sebelumnya).
+      // BERSAMBUNGAN tanpa tumpang tindih dengan section tetangga.
       const shot = (
         selector: string,
-        camLocal: [number, number, number],
-        targetLocal: [number, number, number]
-      ) => {
-        const camWorld = localToWorld(...camLocal);
-        const targetWorld = localToWorld(...targetLocal);
-
-        return gsap.timeline({
-          scrollTrigger: { trigger: selector, start: 'top top', end: 'bottom top', scrub: 1 },
+        from: { cam: THREE.Vector3 | typeof target; target: THREE.Vector3 | typeof target },
+        to: { cam: THREE.Vector3 | typeof target; target: THREE.Vector3 | typeof target },
+        end: string = 'bottom top'
+      ) =>
+        gsap.timeline({
+          scrollTrigger: { trigger: selector, start: 'top top', end, scrub: 1 },
         })
-          .to(camera.position, { x: camWorld.x, y: camWorld.y, z: camWorld.z, onUpdate: aim, ease: 'power1.inOut' }, 0)
-          .to(target, { x: targetWorld.x, y: targetWorld.y, z: targetWorld.z, onUpdate: aim, ease: 'power1.inOut' }, 0);
-      };
+          .fromTo(
+            camera.position,
+            { x: from.cam.x, y: from.cam.y, z: from.cam.z },
+            { x: to.cam.x, y: to.cam.y, z: to.cam.z, onUpdate: aim, ease: 'power1.inOut' },
+            0
+          )
+          .fromTo(
+            target,
+            { x: from.target.x, y: from.target.y, z: from.target.z },
+            { x: to.target.x, y: to.target.y, z: to.target.z, onUpdate: aim, ease: 'power1.inOut' },
+            0
+          );
 
-      // 2. BrandStory - orbit dekat ke tengah shaft
-      shot('.brand-story', [1.8, 1, PART_Z.shaft + 2.2], [0, 0, PART_Z.shaft]);
+      // 2. BrandStory
+      shot('.brand-story', checkpoints[0], checkpoints[1]);
 
-      // 3. ProductHighlights - dorong dekat ke ujung point, lalu explode
-      shot('.product-highlights', [1.3, 0.7, PART_Z.point + 2.6], [0, 0, PART_Z.point]);
+      // 3. ProductHighlights - kamera dorong dekat ke point, lalu point-nya explode
+      shot('.product-highlights', checkpoints[1], checkpoints[2]);
       gsap.timeline({
         scrollTrigger: { trigger: '.product-highlights', start: 'top top', end: 'bottom top', scrub: 1 },
       })
@@ -75,7 +129,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         .to(pointRef.current.position, { z: PART_Z.point, ease: 'power1.inOut' }, 0.7);
 
       // 4. Specs - close-up ke vanes dengan sudut miring, sekalian spin explode
-      shot('.specs', [-1.6, 0.9, PART_Z.vanes + 2.8], [0, 0, PART_Z.vanes - 0.4]);
+      shot('.specs', checkpoints[2], checkpoints[3]);
       gsap.timeline({
         scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: 1 },
       })
@@ -85,14 +139,10 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.7);
 
       // 5. Gallery - close-up ke nock
-      shot('.gallery', [1.2, 0.6, PART_Z.nock + 2.6], [0, 0, PART_Z.nock]);
+      shot('.gallery', checkpoints[3], checkpoints[4]);
 
       // 6. CTAFooter - tarik mundur ke full showcase view lagi
-      gsap.timeline({
-        scrollTrigger: { trigger: '.cta-footer', start: 'top top', end: 'center top', scrub: 1 },
-      })
-        .to(camera.position, { x: 0, y: 0, z: 12, onUpdate: aim, ease: 'power1.inOut' }, 0)
-        .to(target, { x: 0, y: 0, z: 0, onUpdate: aim, ease: 'power1.inOut' }, 0);
+      shot('.cta-footer', checkpoints[4], checkpoints[5], 'center top');
     });
 
     return () => ctx.revert();
