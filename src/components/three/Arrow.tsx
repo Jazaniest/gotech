@@ -15,16 +15,23 @@ const Arrow = () => {
   const nockRef = useRef<THREE.Mesh>(null!);
   const vanesRef = useRef<THREE.Group>(null!);
 
-  const labelTexture = useMemo(() => createShaftLabelTexture('YOUR BRAND'), []);
+  const labelTexture = useMemo(() => createShaftLabelTexture('GOTECH'), []);
   const LABEL_LENGTH = 1.4;   // panjang strip di sepanjang shaft (Z)
   const LABEL_RADIUS = SHAFT_RADIUS + 0.002;
   const LABEL_ARC = Math.PI / 2.2;       // lebar tiap band
   const LABEL_THETA_START = -LABEL_ARC / 2;
-  const LABEL_COUNT = 2;                  // jumlah band di sekeliling shaft
+  const LABEL_COUNT = 1;                  // jumlah band di sekeliling shaft
 
   const brandTexture = useMemo(() => createVaneBrandTexture('GOTECH'), []);
   const VANE_LENGTH = 0.9;
   const VANE_HEIGHT = 0.16;
+
+  const NOCK_BODY_RADIUS = 0.075;
+  const NOCK_PRONG_RADIUS_TOP = 0.028;
+  const NOCK_PRONG_RADIUS_BOTTOM = 0.04;
+  const NOCK_PRONG_HEIGHT = 0.16;
+  const NOCK_PRONG_OFFSET = 0.032;  // jarak tiap prong dari sumbu tengah, bikin celah
+  const NOCK_PRONG_SPLAY = 0.18;    // sudut buka prong ke luar, biar seperti "V"
 
 
   useScrollAnimation({ groupRef, shaftRef, pointRef, nockRef, vanesRef });
@@ -80,6 +87,34 @@ const Arrow = () => {
     geo.computeVertexNormals();
     return geo;
   }, []);
+
+  // Body nock — barrel yang membesar dari shaft, dibangun dari satu
+  // profil lathe (sama seperti pendekatan arrowhead), jadi mulus &
+  // menyatu tanpa sambungan.
+  const nockBodyGeometry = useMemo(() => {
+    const profile = [
+      new THREE.Vector2(SHAFT_RADIUS, 0.13),              // embed ke ujung shaft
+      new THREE.Vector2(NOCK_BODY_RADIUS * 0.8, 0.07),
+      new THREE.Vector2(NOCK_BODY_RADIUS, 0.01),           // bagian terlebar (perut barrel)
+      new THREE.Vector2(NOCK_BODY_RADIUS * 0.92, -0.05),
+      new THREE.Vector2(NOCK_BODY_RADIUS * 0.68, -0.09),   // leher, tempat prong mulai
+    ];
+    return new THREE.LatheGeometry(profile, 32);
+  }, []);
+
+  // Prong — dua "telinga" pembentuk slot tali busur. Default axis
+  // CylinderGeometry sudah di Y, jadi selaras langsung dengan profil
+  // lathe di atas tanpa rotasi tambahan.
+  const nockProngGeometry = useMemo(
+    () =>
+      new THREE.CylinderGeometry(
+        NOCK_PRONG_RADIUS_TOP,
+        NOCK_PRONG_RADIUS_BOTTOM,
+        NOCK_PRONG_HEIGHT,
+        16
+      ),
+    []
+  );
 
   return (
     <group ref={groupRef}>
@@ -174,13 +209,46 @@ const Arrow = () => {
         })}
       </group>
 
-      {/* Nock — torus secara default sudah "ring di bidang XY, lubang
-         menghadap Z", jadi ini bagian yang dari awal SUDAH benar,
-         tidak perlu rotation tambahan. */}
-      <mesh ref={nockRef} position={[0, 0, -4]}>
-        <torusGeometry args={[0.05, 0.015, 16, 32]} />
-        <meshStandardMaterial color="#FFD400" roughness={0.3} metalness={0.1} name="nock" />
-      </mesh>
+      {/* Nock — group berisi body + 2 prong, di-posisikan & dirotasi sekali
+   di level group, biar konsisten dengan konvensi arrowhead */}
+      <group ref={nockRef} position={[0, 0, -4]} rotation-x={Math.PI / 2}>
+        <mesh geometry={nockBodyGeometry}>
+          <meshPhysicalMaterial
+            color="#e4f22e"
+            transparent
+            opacity={0.72}
+            roughness={0.15}
+            metalness={0}
+            clearcoat={0.8}
+            clearcoatRoughness={0.1}
+            transmission={0.35}
+            thickness={0.05}
+            name="nock-body"
+          />
+        </mesh>
+
+        {[-1, 1].map((side) => (
+          <mesh
+            key={side}
+            position={[side * NOCK_PRONG_OFFSET, -0.09 - NOCK_PRONG_HEIGHT / 2 + 0.01, 0]}
+            rotation-z={side * NOCK_PRONG_SPLAY}
+            geometry={nockProngGeometry}
+          >
+            <meshPhysicalMaterial
+              color="#e4f22e"
+              transparent
+              opacity={0.72}
+              roughness={0.15}
+              metalness={0}
+              clearcoat={0.8}
+              clearcoatRoughness={0.1}
+              transmission={0.35}
+              thickness={0.05}
+              name={`nock-prong-${side}`}
+            />
+          </mesh>
+        ))}
+      </group>
     </group>
   );
 };
