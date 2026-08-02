@@ -6,7 +6,7 @@ import BrandStory from './components/sections/BrandStory.tsx';
 import ProductHighlights from './components/sections/ProductHighlights.tsx';
 import Specs from './components/sections/Specs.tsx';
 import Gallery from './components/sections/Gallery.tsx';
-// import CTAFooter from './components/sections/CTAFooter.tsx';
+import CTAFooter from './components/sections/CTAFooter.tsx';
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
         <ProductHighlights />
         <Specs />
         <Gallery />
-        {/* <CTAFooter /> */}
+        <CTAFooter />
       </div>
       <div className="canvas-container">
         <Scene />
