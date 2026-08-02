@@ -2,6 +2,13 @@ import { useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import './Specs.css';
 
+const specs = [
+  { label: 'Vane Count', value: 3, unit: '' },
+  { label: 'Helical Angle', value: 3, unit: '°' },
+  { label: 'Spin Rate', value: 450, unit: ' rpm' },
+  { label: 'Drag Reduction', value: 22, unit: '%' },
+];
+
 const Specs = () => {
   useLayoutEffect(() => {
     gsap.utils.toArray('.spec-value').forEach((el: any) => {
@@ -22,6 +29,14 @@ const Specs = () => {
     <section className="specs">
       <h2>Spin Wing Vanes</h2>
       <p>Our unique helical vane design self-stabilizes the arrow mid-flight, drastically reducing drag and maximizing down-range velocity and accuracy.</p>
+      <ul>
+        {specs.map((spec) => (
+          <li key={spec.label}>
+            <span>{spec.label}</span>
+            <span><span className="spec-value">{spec.value}</span>{spec.unit}</span>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
