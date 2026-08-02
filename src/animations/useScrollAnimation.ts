@@ -84,9 +84,9 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       const checkpoints = [
         { cam: { x: 0, y: 0, z: 12 }, target: { x: 0, y: 0, z: 0 } }, // 1. Hero
         {
-          cam: localToWorld(1.8, 1, PART_Z.shaft + 2.2),
+          cam: localToWorld(0.7, 0.4, PART_Z.shaft + 0.9),
           target: localToWorld(0, 0, PART_Z.shaft),
-        }, // 2. BrandStory - orbit dekat ke tengah shaft
+        }, // 2. BrandStory - close-up dekat ke tengah shaft (carbon core)
         {
           cam: localToWorld(1.3, 0.7, PART_Z.point + 2.6),
           target: localToWorld(0, 0, PART_Z.point),
@@ -129,19 +129,35 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
             0
           );
 
-      // 2. BrandStory
-      shot('.brand-story', checkpoints[0], checkpoints[1]);
+      // PENTING: tiap transisi kamera sekarang terjadi SELAMA scroll
+      // section SEBELUMNYA, bukan section tujuannya sendiri. Alasannya:
+      // section N baru terpusat penuh di layar tepat saat progress trigger
+      // section N == 0 (top-nya pas di top viewport). Kalau transisi ke
+      // pose section N dipasang di trigger section N sendiri, pose itu
+      // baru SELESAI di progress==1 - yaitu pas section N sudah mulai
+      // digantikan section N+1. Jadinya pose section N cuma kelihatan
+      // sesaat sebelum tergantikan, bukan saat section N sedang dibaca.
+      // Dengan memasang transisi di trigger section SEBELUMNYA, pose
+      // section N sudah 100% tercapai sejak section N mulai terpusat.
 
-      // 3. ProductHighlights - kamera dorong dekat ke point, lalu point-nya explode
-      shot('.product-highlights', checkpoints[1], checkpoints[2]);
+      // Hero -> BrandStory (shaft)
+      shot('.hero', checkpoints[0], checkpoints[1]);
+
+      // BrandStory -> ProductHighlights (point)
+      shot('.brand-story', checkpoints[1], checkpoints[2]);
+
+      // ProductHighlights -> Specs (vanes), sekalian point explode SELAMA
+      // ProductHighlights masih terlihat di layar
+      shot('.product-highlights', checkpoints[2], checkpoints[3]);
       gsap.timeline({
         scrollTrigger: { trigger: '.product-highlights', start: 'top top', end: 'bottom top', scrub: true },
       })
         .fromTo(pointRef.current.position, { z: PART_Z.point }, { z: PART_Z.point + 1.4, ease: 'power1.inOut' }, 0.3)
         .to(pointRef.current.position, { z: PART_Z.point, ease: 'power1.inOut' }, 0.7);
 
-      // 4. Specs - close-up ke vanes dengan sudut miring, sekalian spin explode
-      shot('.specs', checkpoints[2], checkpoints[3]);
+      // Specs -> Gallery (nock), sekalian vane spin explode SELAMA
+      // Specs masih terlihat di layar
+      shot('.specs', checkpoints[3], checkpoints[4]);
       gsap.timeline({
         scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },
       })
@@ -150,11 +166,8 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         .to(vanesRef.current.position, { z: PART_Z.vanes, ease: 'power1.inOut' }, 0.7)
         .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.7);
 
-      // 5. Gallery - close-up ke nock
-      shot('.gallery', checkpoints[3], checkpoints[4]);
-
-      // 6. CTAFooter - tarik mundur ke full showcase view lagi
-      shot('.cta-footer', checkpoints[4], checkpoints[5], 'center top');
+      // Gallery -> CTAFooter (balik ke pose awal / full showcase view)
+      shot('.gallery', checkpoints[4], checkpoints[5]);
 
       // Refresh + render langsung DI SINI, setelah semua trigger di atas
       // selesai dibuat - jangan cuma mengandalkan refresh() dari
