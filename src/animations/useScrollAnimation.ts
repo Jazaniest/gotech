@@ -38,6 +38,18 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
     const ctx = gsap.context(() => {
       gsap.set(groupRef.current.rotation, BASE_ROTATION);
       gsap.set(camera.position, { x: 0, y: 0, z: 12 });
+
+      // Reset pose lokal tiap part balik ke posisi diam secara EKSPLISIT,
+      // bukan cuma dibiarkan menunggu ScrollTrigger merender progress
+      // section-nya. Tanpa ini, pointRef/vanesRef bisa "nyangkut" di
+      // pose explode-nya kalau ScrollTrigger.refresh() dari LenisScroller
+      // (effect di komponen LAIN, timingnya independen) sempat balapan
+      // dengan pembuatan trigger di sini - persis penyebab bug "tampilan
+      // awal salah, baru benar setelah scroll turun-naik".
+      gsap.set(pointRef.current.position, { z: PART_Z.point });
+      gsap.set(vanesRef.current.position, { z: PART_Z.vanes });
+      gsap.set(vanesRef.current.rotation, { z: 0 });
+
       groupRef.current.updateMatrixWorld(true);
 
       // Ubah titik dalam ruang LOKAL arrow jadi koordinat dunia, supaya
@@ -102,7 +114,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         end: string = 'bottom top'
       ) =>
         gsap.timeline({
-          scrollTrigger: { trigger: selector, start: 'top top', end, scrub: 1 },
+          scrollTrigger: { trigger: selector, start: 'top top', end, scrub: true },
         })
           .fromTo(
             camera.position,
@@ -123,7 +135,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       // 3. ProductHighlights - kamera dorong dekat ke point, lalu point-nya explode
       shot('.product-highlights', checkpoints[1], checkpoints[2]);
       gsap.timeline({
-        scrollTrigger: { trigger: '.product-highlights', start: 'top top', end: 'bottom top', scrub: 1 },
+        scrollTrigger: { trigger: '.product-highlights', start: 'top top', end: 'bottom top', scrub: true },
       })
         .fromTo(pointRef.current.position, { z: PART_Z.point }, { z: PART_Z.point + 1.4, ease: 'power1.inOut' }, 0.3)
         .to(pointRef.current.position, { z: PART_Z.point, ease: 'power1.inOut' }, 0.7);
@@ -131,7 +143,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       // 4. Specs - close-up ke vanes dengan sudut miring, sekalian spin explode
       shot('.specs', checkpoints[2], checkpoints[3]);
       gsap.timeline({
-        scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: 1 },
+        scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },
       })
         .fromTo(vanesRef.current.position, { z: PART_Z.vanes }, { z: PART_Z.vanes - 1.2, ease: 'power1.inOut' }, 0.3)
         .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut' }, 0.3)
@@ -143,6 +155,13 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
 
       // 6. CTAFooter - tarik mundur ke full showcase view lagi
       shot('.cta-footer', checkpoints[4], checkpoints[5], 'center top');
+
+      // Refresh + render langsung DI SINI, setelah semua trigger di atas
+      // selesai dibuat - jangan cuma mengandalkan refresh() dari
+      // LenisScroller yang jalan di effect komponen lain (bisa beda
+      // urutan/race). Ini memastikan pose section-section di bawah Hero
+      // sudah benar SEJAK render pertama, tanpa perlu scroll turun-naik.
+      ScrollTrigger.refresh();
     });
 
     return () => ctx.revert();
