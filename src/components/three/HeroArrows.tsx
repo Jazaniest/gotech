@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import type * as THREE from 'three';
 import DecorativeArrow from './DecorativeArrow';
 import { useHeroArrowsAnimation, type ArrowSpread } from '../../animations/useHeroArrowsAnimation';
@@ -11,8 +11,11 @@ const COLORS = ['#FFD400', '#e4f22e', '#FFD400', '#e4f22e', '#FFD400', '#e4f22e'
 const HeroArrows = () => {
   // Refs manual (bukan useRef per-elemen) karena jumlahnya dinamis dan
   // harus stabil sepanjang lifetime komponen buat dipakai gsap.context().
-  const refs = useMemo<React.RefObject<THREE.Group>[]>(
-    () => Array.from({ length: ARROW_COUNT }, () => ({ current: null }) as React.RefObject<THREE.Group>),
+  const refs = useMemo(
+    () =>
+      Array.from({ length: ARROW_COUNT }, () =>
+        React.createRef<THREE.Group>()
+      ),
     []
   );
 

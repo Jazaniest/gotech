@@ -15,7 +15,7 @@ export interface ArrowSpread {
 }
 
 interface UseHeroArrowsAnimationProps {
-  refs: React.RefObject<THREE.Group>[];
+  refs: React.RefObject<THREE.Group | null>[];
   // Posisi "ramai" di Hero — semua panah berkumpul & tersebar di dekat panah utama.
   spreads: ArrowSpread[];
   // Posisi keluar panggung, minggir ke kiri/kanan, dipakai selama section tengah.
