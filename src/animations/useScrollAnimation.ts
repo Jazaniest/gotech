@@ -119,13 +119,13 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
           .fromTo(
             camera.position,
             { x: from.cam.x, y: from.cam.y, z: from.cam.z },
-            { x: to.cam.x, y: to.cam.y, z: to.cam.z, onUpdate: aim, ease: 'power1.inOut' },
+            { x: to.cam.x, y: to.cam.y, z: to.cam.z, onUpdate: aim, ease: 'power1.inOut', immediateRender: false },
             0
           )
           .fromTo(
             target,
             { x: from.target.x, y: from.target.y, z: from.target.z },
-            { x: to.target.x, y: to.target.y, z: to.target.z, onUpdate: aim, ease: 'power1.inOut' },
+            { x: to.target.x, y: to.target.y, z: to.target.z, onUpdate: aim, ease: 'power1.inOut', immediateRender: false },
             0
           );
 
