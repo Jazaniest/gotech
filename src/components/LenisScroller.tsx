@@ -27,12 +27,13 @@ const LenisScroller = () => {
     // (termasuk hero.png) benar-benar selesai load — supaya start/end
     // trigger dihitung dari tinggi halaman yang final, bukan yang sementara.
     ScrollTrigger.refresh();
-    window.addEventListener('load', ScrollTrigger.refresh);
+    const refreshScrollTrigger = () => ScrollTrigger.refresh();
+    window.addEventListener('load', refreshScrollTrigger);
 
     return () => {
       gsap.ticker.remove(update);
       ScrollTrigger.removeEventListener('refresh', handleRefresh);
-      window.removeEventListener('load', ScrollTrigger.refresh);
+      window.removeEventListener('load', refreshScrollTrigger);
       lenis.destroy();
     };
   }, []);
