@@ -22,10 +22,10 @@ const Arrow = () => {
   // dengan radius yang tiba-tiba lompat dari 0.04 ke 0.15.
   const pointGeometry = useMemo(() => {
     const profile = [
-      new THREE.Vector2(SHAFT_RADIUS, -0.15), // masuk/embed ke ujung shaft
-      new THREE.Vector2(0.1, 0.0),            // bahu / titik terlebar
-      new THREE.Vector2(0.06, 0.2),
-      new THREE.Vector2(0.0, 0.42),           // ujung lancip
+      new THREE.Vector2(SHAFT_RADIUS, -0.15),        // masuk/embed ke ujung shaft
+      new THREE.Vector2(SHAFT_RADIUS * 1.15, 0.0),    // bahu, cuma sedikit lebih lebar dari shaft
+      new THREE.Vector2(SHAFT_RADIUS * 0.7, 0.2),
+      new THREE.Vector2(0.0, 0.42),                   // ujung lancip
     ];
     return new THREE.LatheGeometry(profile, 32);
   }, []);
