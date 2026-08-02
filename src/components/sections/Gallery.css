@@ -1,0 +1,15 @@
+.gallery {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.gallery h2 {
+  font-size: 4rem;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.gallery p {
+  max-width: 500px;
+}

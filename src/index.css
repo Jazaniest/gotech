@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Grotesk:wght@700&display=swap');
+
+:root {
+  --color-background: #121212;
+  --color-text: #E0E0E0;
+  --color-accent: #00BFFF; /* Electric Blue */
+  --font-primary: 'Inter', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-primary);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  min-width: 320px;
+  min-height: 100vh;
+}

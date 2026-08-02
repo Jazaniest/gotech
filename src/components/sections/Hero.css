@@ -1,0 +1,13 @@
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 8rem;
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0;
+  }
