@@ -11,16 +11,16 @@ const specs = [
 
 const Specs = () => {
   useLayoutEffect(() => {
-    gsap.utils.toArray('.spec-value').forEach((el: any) => {
+    gsap.utils.toArray<HTMLElement>('.spec-value').forEach((el) => {
       gsap.from(el, {
         textContent: 0,
         duration: 2,
-        ease: "power1.inOut",
+        ease: 'power1.inOut',
         snap: { textContent: 1 },
         scrollTrigger: {
           trigger: el,
-          start: "top 80%",
-        }
+          start: 'top 80%',
+        },
       });
     });
   }, []);
