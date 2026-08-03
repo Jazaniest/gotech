@@ -42,7 +42,6 @@ export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAn
 
         // Pose awal: berkumpul ramai di Hero.
         gsap.set(group.position, { x: spread.x, y: spread.y, z: spread.z });
-        gsap.set(group.position, { x: spread.x, y: spread.y, z: spread.z });
         gsap.set(group.rotation, BASE_ROTATION);
         gsap.set(group.scale, { x: 1, y: 1, z: 1 });
 
@@ -78,11 +77,11 @@ export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAn
           },
         }).to(
           group.position,
-          { x: 0, y: 0, z: spread.z, ease: 'power1.out' },
+          { x: spread.x, y: spread.y, z: spread.z, ease: 'power1.out' },
           0
         ).to(
           group.scale,
-          { x: 0.85, y: 0.85, z: 0.85, ease: 'power1.out' },
+          { x: 1, y: 1, z: 1, ease: 'power1.out' },
           0
         );
       });
