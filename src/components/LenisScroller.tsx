@@ -3,12 +3,14 @@ import { useEffect } from 'react';
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import { lenisRef } from '../lib/lenisInstance';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const LenisScroller = () => {
   useEffect(() => {
     const lenis = new Lenis();
+    lenisRef.current = lenis;
 
     lenis.on('scroll', ScrollTrigger.update);
 
@@ -35,6 +37,7 @@ const LenisScroller = () => {
       ScrollTrigger.removeEventListener('refresh', handleRefresh);
       window.removeEventListener('load', refreshScrollTrigger);
       lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 

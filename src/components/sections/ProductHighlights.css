@@ -1,5 +1,6 @@
 /* ProductHighlights.css */
 .product-highlights {
+  position: relative;
   height: 100vh;
   display: flex;
   flex-direction: column;

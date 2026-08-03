@@ -1,6 +1,7 @@
 import { useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import './Specs.css';
+import ScrollDownButton from '../ScrollDownButton';
 
 const specs = [
   { label: 'Vane Count', value: 3, unit: '' },
@@ -37,6 +38,7 @@ const Specs = () => {
           </li>
         ))}
       </ul>
+      <ScrollDownButton target=".gallery" label="Lihat The Perfect Nock" />
     </section>
   )
 }
