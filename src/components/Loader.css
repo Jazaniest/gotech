@@ -1,0 +1,66 @@
+.curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: auto;
+}
+
+.curtain__panel {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 100%;
+  background: #0a0a0a;
+  transition: transform 0.9s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.curtain__panel--left {
+  left: 0;
+}
+
+.curtain__panel--right {
+  right: 0;
+}
+
+.curtain--open .curtain__panel--left {
+  transform: translateX(-100%);
+}
+
+.curtain--open .curtain__panel--right {
+  transform: translateX(100%);
+}
+
+.curtain--open {
+  pointer-events: none;
+}
+
+.curtain__brand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.4em;
+  color: var(--color-text);
+  opacity: 0.85;
+  transition: opacity 0.35s ease;
+}
+
+.curtain__brand span {
+  animation: curtain-pulse 1.4s ease-in-out infinite;
+}
+
+.curtain--open .curtain__brand {
+  opacity: 0;
+}
+
+@keyframes curtain-pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
