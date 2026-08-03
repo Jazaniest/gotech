@@ -19,13 +19,13 @@ interface DecorativeArrowProps {
 }
 
 const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
-  ({ brandLabel = 'GOTECH', color = '#FFD400' }, ref) => {
+  ({ brandLabel = 'GOTECH PURE CARBON', color = '#FFD400' }, ref) => {
     const labelTexture = useMemo(() => createShaftLabelTexture(brandLabel), [brandLabel]);
     const LABEL_LENGTH = 1.4;
     const LABEL_RADIUS = SHAFT_RADIUS + 0.002;
     const LABEL_ARC = Math.PI / 2.2;
     const LABEL_THETA_START = -LABEL_ARC / 2;
-    const LABEL_COUNT = 1;
+    const LABEL_COUNT = 3;
 
     const brandTexture = useMemo(() => createVaneBrandTexture(brandLabel), [brandLabel]);
     const VANE_LENGTH = 0.9;
@@ -122,26 +122,29 @@ const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
         {Array.from({ length: LABEL_COUNT }).map((_, i) => {
           const angle = (i * 2 * Math.PI) / LABEL_COUNT;
           return (
-            <mesh key={i} position={[0, 0, 0]} rotation-x={Math.PI / 2} rotation-z={angle}>
-              <cylinderGeometry
-                args={[
-                  LABEL_RADIUS,
-                  LABEL_RADIUS,
-                  LABEL_LENGTH,
-                  32,
-                  1,
-                  true,
-                  LABEL_THETA_START,
-                  LABEL_ARC,
-                ]}
-              />
-              <meshStandardMaterial
-                map={labelTexture}
-                transparent
-                roughness={0.4}
-                metalness={0.2}
-              />
-            </mesh>
+            <group key={i} rotation-z={angle}>
+              <mesh position={[0, 0, 0]} rotation-x={Math.PI / 2}>
+                <cylinderGeometry
+                  args={[
+                    LABEL_RADIUS,
+                    LABEL_RADIUS,
+                    LABEL_LENGTH,
+                    32,
+                    1,
+                    true,
+                    LABEL_THETA_START,
+                    LABEL_ARC,
+                  ]}
+                />
+                <meshStandardMaterial
+                  map={labelTexture}
+                  transparent
+                  roughness={0.4}
+                  metalness={0.2}
+                  name={`shaft-label-${i}`}
+                />
+              </mesh>
+            </group>
           );
         })}
 
