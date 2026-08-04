@@ -26,3 +26,12 @@
   color: var(--color-accent);
   font-weight: bold;
 }
+
+@media (max-width: 768px) {
+  .specs h2 {
+    font-size: 2.5rem;
+  }
+  .specs ul {
+    font-size: 1.1rem;
+  }
+}

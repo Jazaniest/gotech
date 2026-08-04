@@ -14,3 +14,9 @@
 .gallery p {
   max-width: 500px;
 }
+
+@media (max-width: 768px) {
+  .gallery h2 {
+    font-size: 2.5rem;
+  }
+}
