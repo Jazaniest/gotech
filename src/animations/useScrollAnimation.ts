@@ -62,7 +62,17 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         groupRef.current.localToWorld(new THREE.Vector3(x, y, z));
 
       const target = { x: 0, y: 0, z: 0 };
-      const aim = () => camera.lookAt(target.x, target.y, target.z);
+      // Roll kamera - rotasi sumbu "atas" kamera di sekitar arah
+      // pandangnya sendiri. Arrow yang vertikal murni (BASE_ROTATION di
+      // atas) akan SELALU tampak tegak di layar dari sudut kamera
+      // manapun (posisi kamera tidak memengaruhi ini), KECUALI kalau
+      // vektor "up" kamera sendiri dimiringkan - itu fungsi roll di sini.
+      // roll=0 -> up standar (0,1,0) -> arrow tampak tegak lurus.
+      const roll = { value: 0 };
+      const aim = () => {
+        camera.up.set(Math.sin(roll.value), Math.cos(roll.value), 0);
+        camera.lookAt(target.x, target.y, target.z);
+      };
       aim();
 
       // Checkpoint kamera+target di tiap "pemberhentian" scroll, dihitung
@@ -84,11 +94,20 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       // checkpoint tetap ini menghilangkan ambiguitas itu sepenuhnya -
       // dari arah manapun discroll, titik awal & akhir tiap section
       // selalu pasti sama.
+      // Roll kamera per section (radian). Cuma BrandStory yang diisi -
+      // supaya SEKILAS PANDANG arrow-nya kelihatan MIRING dari pojok
+      // kiri-atas ke kanan-bawah (sesuai request), padahal arrow-nya
+      // sendiri tetap tegak lurus vertikal (tidak diubah rotasinya).
+      // Section lain roll=0 (kembali tegak), jadi transisinya otomatis
+      // muter balik ke tegak begitu BrandStory discroll lewat.
+      // const BRAND_STORY_ROLL = ;
+      const rolls = [0, -Math.PI / 2, -Math.PI / 2, 0, 0, 0];
+
       const checkpoints = [
         { cam: { x: 0, y: 0, z: 12 }, target: { x: 0, y: 0, z: 0 } }, // 1. Hero
         {
           cam: localToWorld(0.7, 0.4, PART_Z.shaft + 0.9),
-          target: localToWorld(0, 0, PART_Z.shaft),
+          target: localToWorld(0.2, -0.2, PART_Z.shaft),
         }, // 2. BrandStory - close-up dekat ke tengah shaft (carbon core)
         {
           cam: localToWorld(1.3, 0.7, PART_Z.point + 2.6),
@@ -114,6 +133,8 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         selector: string,
         from: { cam: THREE.Vector3 | typeof target; target: THREE.Vector3 | typeof target },
         to: { cam: THREE.Vector3 | typeof target; target: THREE.Vector3 | typeof target },
+        fromRoll: number,
+        toRoll: number,
         end: string = 'bottom top'
       ) =>
         gsap.timeline({
@@ -130,6 +151,12 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
             { x: from.target.x, y: from.target.y, z: from.target.z },
             { x: to.target.x, y: to.target.y, z: to.target.z, onUpdate: aim, ease: 'power1.inOut', immediateRender: false },
             0
+          )
+          .fromTo(
+            roll,
+            { value: fromRoll },
+            { value: toRoll, onUpdate: aim, ease: 'power1.inOut', immediateRender: false },
+            0
           );
 
       // PENTING: tiap transisi kamera sekarang terjadi SELAMA scroll
@@ -144,14 +171,14 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       // section N sudah 100% tercapai sejak section N mulai terpusat.
 
       // Hero -> BrandStory (shaft)
-      shot('.hero', checkpoints[0], checkpoints[1]);
+      shot('.hero', checkpoints[0], checkpoints[1], rolls[0], rolls[1]);
 
       // BrandStory -> ProductHighlights (point)
-      shot('.brand-story', checkpoints[1], checkpoints[2]);
+      shot('.brand-story', checkpoints[1], checkpoints[2], rolls[1], rolls[2]);
 
       // ProductHighlights -> Specs (vanes), sekalian point explode SELAMA
       // ProductHighlights masih terlihat di layar
-      shot('.product-highlights', checkpoints[2], checkpoints[3]);
+      shot('.product-highlights', checkpoints[2], checkpoints[3], rolls[2], rolls[3]);
       gsap.timeline({
         scrollTrigger: { trigger: '.product-highlights', start: 'top top', end: 'bottom top', scrub: true },
       })
@@ -162,7 +189,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       // terlihat di layar. Cuma BERPUTAR di tempat (rotation.z), TIDAK
       // digeser posisinya - supaya tetap nempel di shaft, tidak
       // kelihatan "copot"/lepas seperti sebelumnya.
-      shot('.specs', checkpoints[3], checkpoints[4]);
+      shot('.specs', checkpoints[3], checkpoints[4], rolls[3], rolls[4]);
       gsap.timeline({
         scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },
       })
@@ -170,7 +197,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.8);
 
       // Gallery -> CTAFooter (balik ke pose awal / full showcase view)
-      shot('.gallery', checkpoints[4], checkpoints[5]);
+      shot('.gallery', checkpoints[4], checkpoints[5], rolls[4], rolls[5]);
 
       // Refresh + render langsung DI SINI, setelah semua trigger di atas
       // selesai dibuat - jangan cuma mengandalkan refresh() dari
