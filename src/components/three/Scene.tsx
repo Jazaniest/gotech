@@ -30,8 +30,8 @@ const Scene = ({ onReady }: SceneProps) => {
       <Lighting />
       <Arrow>
         <SecondaryArrow />
+        <HeroArrows />
       </Arrow>
-      <HeroArrows />
       <Suspense fallback={null}>
         <Environment preset="studio" />
         <EnvironmentReady onReady={onReady} />

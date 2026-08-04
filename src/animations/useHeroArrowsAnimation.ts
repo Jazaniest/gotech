@@ -6,8 +6,6 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const BASE_ROTATION = { x: -Math.PI / 4, y: Math.PI / 8, z: 0 };
-
 export interface ArrowSpread {
   x: number;
   y: number;
@@ -16,18 +14,25 @@ export interface ArrowSpread {
 
 interface UseHeroArrowsAnimationProps {
   refs: React.RefObject<THREE.Group | null>[];
-  // Posisi "ramai" di Hero — semua panah berkumpul & tersebar di dekat panah utama.
+  // Posisi "ramai" di Hero — semua panah berbaris rapi & sejajar dengan panah utama.
   spreads: ArrowSpread[];
-  // Posisi keluar panggung, minggir ke kiri/kanan, dipakai selama section tengah.
+  // Posisi keluar panggung, dipakai selama section tengah.
   exits: ArrowSpread[];
 }
 
-// Mengatur panah-panah dekoratif di Hero:
-// 1) Tampil "ramai" tersebar di sekitar panah utama saat Hero pertama kali dilihat.
-// 2) Selama Hero discroll, tiap panah minggir ke kiri/kanan dan mengecil ke 0 —
-//    supaya section BrandStory..Gallery cuma menyisakan SATU panah utama.
+// Mengatur panah-panah dekoratif di Hero. Komponen ini di-render sebagai
+// CHILD dari group panah utama (lihat Arrow.tsx -> {children} dan
+// Scene.tsx), jadi rotasi di sini TIDAK di-set lagi (BASE_ROTATION sudah
+// otomatis diwarisi dari parent) - kalau di-set ulang di sini, rotasinya
+// akan dobel/miring. Posisi (spreads/exits) juga dalam ruang LOKAL yang
+// sama seperti panah utama, jadi baris panah selalu sejajar sempurna ke
+// mana pun kamera orbit, bukan cuma sejajar dari satu sudut tertentu.
+//
+// 1) Tampil "ramai" berbaris rapi di sekitar panah utama saat Hero pertama kali dilihat.
+// 2) Selama Hero discroll, semua panah geser keluar & mengecil ke 0 —
+//    supaya section BrandStory..Gallery cuma menyisakan panah utama & panah kedua.
 // 3) Selama section Gallery (section terakhir sebelum CTA/pricing), semua panah
-//    dekoratif ini balik & menyatu lagi ke tengah, tiba bersamaan saat CTAFooter mulai.
+//    dekoratif ini balik & menyatu lagi ke baris semula, tiba bersamaan saat CTAFooter mulai.
 export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAnimationProps) => {
   useLayoutEffect(() => {
     if (refs.some((r) => !r.current)) return;
@@ -40,12 +45,12 @@ export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAn
         const spread = spreads[i];
         const exit = exits[i];
 
-        // Pose awal: berkumpul ramai di Hero.
+        // Pose awal: berbaris rapi di Hero.
         gsap.set(group.position, { x: spread.x, y: spread.y, z: spread.z });
-        gsap.set(group.rotation, BASE_ROTATION);
+        gsap.set(group.rotation, { x: 0, y: 0, z: 0 });
         gsap.set(group.scale, { x: 1, y: 1, z: 1 });
 
-        // Hero discroll -> tiap panah minggir ke kiri/kanan sambil mengecil,
+        // Hero discroll -> tiap panah geser keluar sambil mengecil,
         // sampai habis (scale ~0) pas Hero selesai. Dari sini sampai akhir
         // Specs, mereka diam di posisi exit (tak ada trigger lain yang ubah).
         gsap.timeline({
@@ -66,8 +71,8 @@ export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAn
         );
 
         // Section Gallery (sesaat sebelum CTAFooter/"pricing") -> semua
-        // panah dekoratif balik menyatu ke tengah & membesar lagi, tiba
-        // bersamaan pas CTAFooter mulai kelihatan.
+        // panah dekoratif balik menyatu ke baris semula & membesar lagi,
+        // tiba bersamaan pas CTAFooter mulai kelihatan.
         gsap.timeline({
           scrollTrigger: {
             trigger: '.gallery',

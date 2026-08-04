@@ -16,10 +16,13 @@ interface UseScrollAnimationProps {
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Arrow selalu di pose diagonal ini - yang bergerak antar section cuma
-// kameranya. Ini mencegah masalah "arrow jadi titik" kalau di-luruskan
-// sementara kamera lihat dari sumbu Z negatif.
-const BASE_ROTATION = { x: -Math.PI / 4, y: Math.PI / 8, z: 0 };
+// Arrow selalu tegak vertikal (sumbu Y) - yang bergerak antar section
+// cuma kameranya. Vertikal AMAN dari masalah "arrow jadi titik" karena
+// itu cuma terjadi kalau arrow disejajarkan ke SUMBU KAMERA (Z, lurus ke
+// arah pandang kamera yang ada di z=12 menghadap -Z) - vertikal (Y)
+// justru tegak lurus terhadap arah pandang itu, jadi tetap kelihatan
+// sebagai garis lurus di layar, bukan titik.
+const BASE_ROTATION = { x: -Math.PI / 2, y: 0, z: 0 };
 
 // Posisi Z lokal tiap bagian saat diam (sesuai geometry di Arrow.tsx)
 const PART_Z = {
