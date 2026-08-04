@@ -8,6 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 interface UseSecondaryArrowAnimationProps {
   groupRef: React.RefObject<THREE.Group | null>;
+  vanesRef: React.RefObject<THREE.Group | null>;
   // Offset di ruang LOKAL shaft utama, biar tidak numpuk/clipping.
   // X = menyamping dari shaft, Y = naik/turun, Z = maju/mundur sepanjang shaft.
   xOffset: number;
@@ -26,7 +27,7 @@ interface UseSecondaryArrowAnimationProps {
 // parent - bukan set ulang BASE_ROTATION (kalau di-set ulang, rotasinya
 // akan dobel/miring).
 //
-// Timeline rotasi lokal Y:
+// Timeline rotasi lokal Y (grup utuh panah kedua):
 // 1. Hero (0)                -> tegak, identik arrow utama.
 // 2. Hero discroll ke BrandStory -> 180°, jadi berlawanan arah arrow utama.
 // 3. BrandStory discroll ke ProductHighlights -> balik ke 0°, searah lagi
@@ -38,8 +39,13 @@ interface UseSecondaryArrowAnimationProps {
 // useScrollAnimation.ts: supaya pose "searah lagi" itu sudah 100%
 // tercapai SEJAK ProductHighlights mulai terpusat di layar, bukan baru
 // selesai pas ProductHighlights sudah mau habis.
+//
+// Vane spin di section Specs: sama seperti vane arrow utama, CUMA
+// berputar di tempat (rotation.z), TIDAK digeser posisinya - supaya
+// tetap nempel di shaft, tidak kelihatan "copot".
 export const useSecondaryArrowAnimation = ({
   groupRef,
+  vanesRef,
   xOffset,
   yOffset,
   zOffset,
@@ -53,6 +59,9 @@ export const useSecondaryArrowAnimation = ({
 
       gsap.set(group.position, { x: xOffset, y: yOffset, z: zOffset });
       gsap.set(group.rotation, { x: 0, y: 0, z: 0 });
+      if (vanesRef.current) {
+        gsap.set(vanesRef.current.rotation, { z: 0 });
+      }
 
       // Hero -> BrandStory: 0 -> 180°
       gsap.timeline({
@@ -84,9 +93,18 @@ export const useSecondaryArrowAnimation = ({
         0
       );
 
+      // Specs: vane spin di tempat, sinkron sama arrow utama
+      if (vanesRef.current) {
+        gsap.timeline({
+          scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },
+        })
+          .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut' }, 0.3)
+          .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.8);
+      }
+
       ScrollTrigger.refresh();
     });
 
     return () => ctx.revert();
-  }, [groupRef, xOffset, yOffset, zOffset]);
+  }, [groupRef, vanesRef, xOffset, yOffset, zOffset]);
 };

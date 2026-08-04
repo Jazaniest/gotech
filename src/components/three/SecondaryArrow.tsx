@@ -13,7 +13,9 @@ interface SecondaryArrowProps {
 // DecorativeArrow yang memang dibuat sama persis), tapi tanpa animasi
 // "explode" per-bagian - panah ini cuma butuh posisi (offset ke samping)
 // dan rotasi (tegak di Hero, lalu 180° di section berikutnya), makanya
-// cukup satu group ref lewat useSecondaryArrowAnimation.
+// cukup satu group ref lewat useSecondaryArrowAnimation. Vanes-nya juga
+// punya ref sendiri (vanesRef) supaya bisa ikut spin di section Specs,
+// sama seperti vane arrow utama.
 //
 // xOffset/yOffset/zOffset SENGAJA kecil (bukan beberapa unit) karena
 // panah ini adalah child dari group arrow utama (lihat Arrow.tsx ->
@@ -25,12 +27,13 @@ interface SecondaryArrowProps {
 // jauh (Hero). Ketiga offset ini dalam ruang LOKAL shaft utama (X =
 // menyamping dari shaft, Y = naik/turun, Z = maju/mundur sepanjang
 // shaft), jadi bisa dikombinasikan bebas buat atur posisi relatifnya.
-const SecondaryArrow = ({ xOffset = 0.3, yOffset = 0, zOffset = 0.2 }: SecondaryArrowProps) => {
+const SecondaryArrow = ({ xOffset = 0.3, yOffset = 0, zOffset = 0 }: SecondaryArrowProps) => {
   const groupRef = useRef<THREE.Group>(null!);
+  const vanesRef = useRef<THREE.Group>(null!);
 
-  useSecondaryArrowAnimation({ groupRef, xOffset, yOffset, zOffset });
+  useSecondaryArrowAnimation({ groupRef, vanesRef, xOffset, yOffset, zOffset });
 
-  return <DecorativeArrow ref={groupRef} color="#e4f22e" />;
+  return <DecorativeArrow ref={groupRef} vanesRef={vanesRef} color="#e4f22e" />;
 };
 
 export default SecondaryArrow;

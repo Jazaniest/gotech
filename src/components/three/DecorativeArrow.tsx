@@ -16,10 +16,11 @@ const VANE_COUNT = 3;
 interface DecorativeArrowProps {
   brandLabel?: string;
   color?: string;
+  vanesRef?: React.RefObject<THREE.Group | null>;
 }
 
 const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
-  ({ brandLabel = 'GOTECH PURE CARBON', color = '#FFD400' }, ref) => {
+  ({ brandLabel = 'GOTECH PURE CARBON', color = '#FFD400', vanesRef }, ref) => {
     const labelTexture = useMemo(() => createShaftLabelTexture(brandLabel), [brandLabel]);
     const LABEL_LENGTH = 1.4;
     const LABEL_RADIUS = SHAFT_RADIUS + 0.002;
@@ -154,7 +155,7 @@ const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
         </mesh>
 
         {/* Vanes */}
-        <group position={[0, 0, -3.8]}>
+        <group ref={vanesRef} position={[0, 0, -3.8]}>
           {Array.from({ length: VANE_COUNT }).map((_, i) => {
             const angle = (i * 2 * Math.PI) / VANE_COUNT;
             const isBrandVane = i === 2;

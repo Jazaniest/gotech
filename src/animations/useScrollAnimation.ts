@@ -155,15 +155,15 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         .fromTo(pointRef.current.position, { z: PART_Z.point }, { z: PART_Z.point + 1.4, ease: 'power1.inOut' }, 0.3)
         .to(pointRef.current.position, { z: PART_Z.point, ease: 'power1.inOut' }, 0.8);
 
-      // Specs -> Gallery (nock), sekalian vane spin explode SELAMA
-      // Specs masih terlihat di layar
+      // Specs -> Gallery (nock), sekalian vane spin SELAMA Specs masih
+      // terlihat di layar. Cuma BERPUTAR di tempat (rotation.z), TIDAK
+      // digeser posisinya - supaya tetap nempel di shaft, tidak
+      // kelihatan "copot"/lepas seperti sebelumnya.
       shot('.specs', checkpoints[3], checkpoints[4]);
       gsap.timeline({
         scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },
       })
-        .fromTo(vanesRef.current.position, { z: PART_Z.vanes }, { z: PART_Z.vanes - 1.2, ease: 'power1.inOut' }, 0.3)
         .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut' }, 0.3)
-        .to(vanesRef.current.position, { z: PART_Z.vanes, ease: 'power1.inOut' }, 0.8)
         .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.8);
 
       // Gallery -> CTAFooter (balik ke pose awal / full showcase view)
