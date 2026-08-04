@@ -8,7 +8,11 @@ const SHAFT_RADIUS = 0.04;
 const SHAFT_LENGTH = 8;
 const VANE_COUNT = 3;
 
-const Arrow = () => {
+interface ArrowProps {
+  children?: React.ReactNode;
+}
+
+const Arrow = ({ children }: ArrowProps) => {
   const groupRef = useRef<THREE.Group>(null!);
   const shaftRef = useRef<THREE.Mesh>(null!);
   const pointRef = useRef<THREE.Mesh>(null!);
@@ -251,6 +255,8 @@ const Arrow = () => {
           </mesh>
         ))}
       </group>
+
+      {children}
     </group>
   );
 };

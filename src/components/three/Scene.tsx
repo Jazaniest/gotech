@@ -2,6 +2,7 @@ import { Canvas } from '@react-three/fiber';
 import { Environment } from '@react-three/drei';
 import { Suspense, useEffect } from 'react';
 import Arrow from './Arrow';
+import SecondaryArrow from './SecondaryArrow';
 import HeroArrows from './HeroArrows';
 import Lighting from './Lighting';
 
@@ -27,7 +28,9 @@ const Scene = ({ onReady }: SceneProps) => {
   return (
     <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
       <Lighting />
-      <Arrow />
+      <Arrow>
+        <SecondaryArrow />
+      </Arrow>
       <HeroArrows />
       <Suspense fallback={null}>
         <Environment preset="studio" />
