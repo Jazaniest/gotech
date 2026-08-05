@@ -36,7 +36,7 @@ const PART_Z = {
 // karena ini murni soal komposisi/estetika (arah "atas" kamera), bukan
 // soal muat/tidaknya di layar (itu urusan CAMERA_CONFIG di bawah).
 // Index sejajar sama checkpoints: 0=Hero, 1=BrandStory, 2=ProductHighlights,
-// 3=Specs, 4=Gallery, 5=CTAFooter.
+// 3=Specs, 4=Nock, 5=CTAFooter.
 //
 // -Math.PI dipakai (bukan +Math.PI) buat Specs walau hasilnya identik
 // (180° sama aja mau positif atau negatif) - supaya transisi dari
@@ -44,8 +44,8 @@ const PART_Z = {
 // pakai +Math.PI), jadi putarannya tetap mulus & searah, nggak
 // "muter balik" tiba-tiba.
 const SPECS_ROLL = -Math.PI;               // 180° - arrow kebalik, jadi "menghadap ke bawah"
-const GALLERY_ROLL = -Math.PI + Math.PI / 6; // sedikit lebih miring dari full-flip - nock keliatan agak miring
-const rolls = [0, -Math.PI / 2, -Math.PI / 2, SPECS_ROLL, GALLERY_ROLL, 0];
+const NOCK_ROLL = -Math.PI + Math.PI / 6;   // sedikit lebih miring dari full-flip - nock keliatan agak miring
+const rolls = [0, -Math.PI / 2, -Math.PI / 2, SPECS_ROLL, NOCK_ROLL, 0];
 
 // Dua set framing kamera: DESKTOP (angka lama, sudah di-tuning manual)
 // dan MOBILE (layar sempit & portrait, jadi kamera ditarik lebih jauh +
@@ -63,7 +63,7 @@ const CAMERA_CONFIG = {
     brandStory: { cam: [0.7, 0.4, PART_Z.shaft + 0.9] as const, target: [0.2, -0.2, PART_Z.shaft] as const },
     productHighlights: { cam: [1.3, 0.7, PART_Z.point + 2.6] as const, target: [0, 0, PART_Z.point] as const },
     specs: { cam: [-1.6, 0.9, PART_Z.vanes + 2.8] as const, target: [0, 0, PART_Z.vanes - 0.4] as const },
-    gallery: { cam: [1.2, 0.6, PART_Z.nock + 2.6] as const, target: [0, 0, PART_Z.nock] as const },
+    nock: { cam: [1.2, 0.6, PART_Z.nock + 2.6] as const, target: [0, 0, PART_Z.nock] as const },
   },
   tablet: {
     fov: 50,
@@ -71,7 +71,7 @@ const CAMERA_CONFIG = {
     brandStory: { cam: [0.55, 0.32, PART_Z.shaft + 1.2] as const, target: [0.15, -0.15, PART_Z.shaft] as const },
     productHighlights: { cam: [1.0, 0.6, PART_Z.point + 3.2] as const, target: [0, 0, PART_Z.point] as const },
     specs: { cam: [-1.25, 0.72, PART_Z.vanes + 3.4] as const, target: [0, 0, PART_Z.vanes - 0.4] as const },
-    gallery: { cam: [0.9, 0.5, PART_Z.nock + 3.2] as const, target: [0, 0, PART_Z.nock] as const },
+    nock: { cam: [0.9, 0.5, PART_Z.nock + 3.2] as const, target: [0, 0, PART_Z.nock] as const },
   },
   mobile: {
     fov: 58,
@@ -79,7 +79,7 @@ const CAMERA_CONFIG = {
     brandStory: { cam: [0.95, 0.25, PART_Z.shaft + 1.6] as const, target: [0.1, -0.1, PART_Z.shaft] as const },
     productHighlights: { cam: [1.5, 0.45, PART_Z.point + 3.8] as const, target: [0, 0, PART_Z.point] as const },
     specs: { cam: [-0.9, 0.55, PART_Z.vanes + 4.0] as const, target: [0, 0, PART_Z.vanes - 0.4] as const },
-    gallery: { cam: [0.65, 0.4, PART_Z.nock + 3.8] as const, target: [0, 0, PART_Z.nock] as const },
+    nock: { cam: [0.65, 0.4, PART_Z.nock + 3.8] as const, target: [0, 0, PART_Z.nock] as const },
   },
 };
 
@@ -168,9 +168,9 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
           target: localToWorld(config.specs.target[0], config.specs.target[1], config.specs.target[2]),
         }, // 4. Specs - close-up ke vanes dengan sudut miring
         {
-          cam: localToWorld(config.gallery.cam[0], config.gallery.cam[1], config.gallery.cam[2]),
-          target: localToWorld(config.gallery.target[0], config.gallery.target[1], config.gallery.target[2]),
-        }, // 5. Gallery - close-up ke nock
+          cam: localToWorld(config.nock.cam[0], config.nock.cam[1], config.nock.cam[2]),
+          target: localToWorld(config.nock.target[0], config.nock.target[1], config.nock.target[2]),
+        }, // 5. Nock - close-up ke nock
         { cam: { x: 0, y: 0, z: config.heroDistance }, target: { x: 0, y: 0, z: 0 } }, // 6. CTAFooter - balik ke pose awal
       ];
 
@@ -235,7 +235,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         .fromTo(pointRef.current.position, { z: PART_Z.point }, { z: PART_Z.point + 1.4, ease: 'power1.inOut', immediateRender: false }, 0.3)
         .to(pointRef.current.position, { z: PART_Z.point, ease: 'power1.inOut' }, 0.8);
 
-      // Specs -> Gallery (nock), sekalian vane spin SELAMA Specs masih
+      // Specs -> Nock, sekalian vane spin SELAMA Specs masih
       // terlihat di layar. Cuma BERPUTAR di tempat (rotation.z), TIDAK
       // digeser posisinya - supaya tetap nempel di shaft, tidak
       // kelihatan "copot"/lepas seperti sebelumnya.
@@ -246,8 +246,8 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
         .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut', immediateRender: false }, 0.3)
         .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.8);
 
-      // Gallery -> CTAFooter (balik ke pose awal / full showcase view)
-      shot('.gallery', checkpoints[4], checkpoints[5], rolls[4], rolls[5]);
+      // Nock -> CTAFooter (balik ke pose awal / full showcase view)
+      shot('.nock', checkpoints[4], checkpoints[5], rolls[4], rolls[5]);
 
       // Refresh + render langsung DI SINI, setelah semua trigger di atas
       // selesai dibuat - jangan cuma mengandalkan refresh() dari

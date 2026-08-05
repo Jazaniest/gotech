@@ -17,6 +17,7 @@ const NAV_LINKS: NavLink[] = [
   { label: 'Carbon Core', target: '.brand-story' },
   { label: 'Tungsten Point', target: '.product-highlights' },
   { label: 'Spin Wing Vanes', target: '.specs' },
+  { label: 'Nock', target: '.nock' },
   { label: 'Gallery', target: '.gallery' },
   { label: 'Pricing', target: '.pricing-section' },
   { label: 'Contact', target: '.cta-footer' },

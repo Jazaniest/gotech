@@ -31,8 +31,8 @@ interface UseHeroArrowsAnimationProps {
 // 1) Tampil "ramai" berbaris rapi di sekitar panah utama saat Hero pertama kali dilihat.
 // 2) Selama Hero discroll, semua panah geser keluar & mengecil ke 0 —
 //    supaya section BrandStory..Gallery cuma menyisakan panah utama & panah kedua.
-// 3) Selama section Gallery (section terakhir sebelum CTA/pricing), semua panah
-//    dekoratif ini balik & menyatu lagi ke baris semula, tiba bersamaan saat CTAFooter mulai.
+// 3) Selama section Nock (sesaat sebelum Gallery/Pricing/CTAFooter), semua panah
+//    dekoratif ini balik & menyatu lagi ke baris semula, tiba bersamaan saat section Nock berakhir.
 export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAnimationProps) => {
   useLayoutEffect(() => {
     if (refs.some((r) => !r.current)) return;
@@ -70,12 +70,12 @@ export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAn
           0
         );
 
-        // Section Gallery (sesaat sebelum CTAFooter/"pricing") -> semua
+        // Section Nock (sesaat sebelum Gallery/Pricing/CTAFooter) -> semua
         // panah dekoratif balik menyatu ke baris semula & membesar lagi,
-        // tiba bersamaan pas CTAFooter mulai kelihatan.
+        // tiba bersamaan pas section Nock berakhir.
         gsap.timeline({
           scrollTrigger: {
-            trigger: '.gallery',
+            trigger: '.nock',
             start: 'top top',
             end: 'bottom top',
             scrub: true,

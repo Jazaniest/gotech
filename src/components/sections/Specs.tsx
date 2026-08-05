@@ -38,7 +38,7 @@ const Specs = () => {
           </li>
         ))}
       </ul>
-      <ScrollDownButton target=".gallery" label="Lihat The Perfect Nock" />
+      <ScrollDownButton target=".nock" label="Lihat The Perfect Nock" />
     </section>
   )
 }

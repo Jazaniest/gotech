@@ -1,0 +1,22 @@
+.nock {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.nock h2 {
+  font-size: 4rem;
+  font-family: 'Space Grotesk', sans-serif;
+}
+.nock p {
+  max-width: 500px;
+}
+
+@media (max-width: 768px) {
+  .nock h2 {
+    font-size: 2.5rem;
+  }
+}
