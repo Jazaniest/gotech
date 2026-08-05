@@ -232,7 +232,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       gsap.timeline({
         scrollTrigger: { trigger: '.product-highlights', start: 'top top', end: 'bottom top', scrub: true },
       })
-        .fromTo(pointRef.current.position, { z: PART_Z.point }, { z: PART_Z.point + 1.4, ease: 'power1.inOut' }, 0.3)
+        .fromTo(pointRef.current.position, { z: PART_Z.point }, { z: PART_Z.point + 1.4, ease: 'power1.inOut', immediateRender: false }, 0.3)
         .to(pointRef.current.position, { z: PART_Z.point, ease: 'power1.inOut' }, 0.8);
 
       // Specs -> Gallery (nock), sekalian vane spin SELAMA Specs masih
@@ -243,7 +243,7 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       gsap.timeline({
         scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },
       })
-        .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut' }, 0.3)
+        .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut', immediateRender: false }, 0.3)
         .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.8);
 
       // Gallery -> CTAFooter (balik ke pose awal / full showcase view)

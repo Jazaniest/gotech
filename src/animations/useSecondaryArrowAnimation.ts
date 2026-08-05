@@ -43,6 +43,19 @@ interface UseSecondaryArrowAnimationProps {
 // Vane spin di section Specs: sama seperti vane arrow utama, CUMA
 // berputar di tempat (rotation.z), TIDAK digeser posisinya - supaya
 // tetap nempel di shaft, tidak kelihatan "copot".
+//
+// PENTING - immediateRender: false di SEMUA fromTo() di bawah:
+// tanpa ini, GSAP me-render nilai "from" tween SECARA LANGSUNG saat
+// tween dibuat (perilaku default fromTo), TERPISAH dari evaluasi
+// progress asli oleh ScrollTrigger berdasarkan posisi scroll saat itu.
+// Begitu ScrollTrigger lalu mengevaluasi progress-nya sendiri (yang
+// bisa kepicu SEBELUM layout/scroll-height benar-benar settle pas
+// reload/refresh halaman - lihat catatan LenisScroller-race di
+// useScrollAnimation.ts), dua render itu bisa "balapan" dan yang
+// menang bukan yang seharusnya - persis penyebab bug "kebalik sendiri
+// pas reload, baru benar setelah scroll". immediateRender: false
+// mematikan render otomatis itu, biar SATU-SATUNYA sumber nilai
+// adalah evaluasi progress ScrollTrigger yang sebenarnya.
 export const useSecondaryArrowAnimation = ({
   groupRef,
   vanesRef,
@@ -74,7 +87,7 @@ export const useSecondaryArrowAnimation = ({
       }).fromTo(
         group.rotation,
         { y: 0 },
-        { y: Math.PI, ease: 'power1.inOut' },
+        { y: Math.PI, ease: 'power1.inOut', immediateRender: false },
         0
       );
 
@@ -89,7 +102,7 @@ export const useSecondaryArrowAnimation = ({
       }).fromTo(
         group.rotation,
         { y: Math.PI },
-        { y: Math.PI * 2, ease: 'power1.inOut' },
+        { y: Math.PI * 2, ease: 'power1.inOut', immediateRender: false },
         0
       );
 
@@ -98,7 +111,7 @@ export const useSecondaryArrowAnimation = ({
         gsap.timeline({
           scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },
         })
-          .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut' }, 0.3)
+          .fromTo(vanesRef.current.rotation, { z: 0 }, { z: Math.PI * 2, ease: 'power1.inOut', immediateRender: false }, 0.3)
           .to(vanesRef.current.rotation, { z: 0, ease: 'power1.inOut' }, 0.8);
       }
 
