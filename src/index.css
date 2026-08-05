@@ -3,7 +3,9 @@
 :root {
   --color-background: #121212;
   --color-text: #E0E0E0;
-  --color-accent: #00BFFF; /* Electric Blue */
+  --color-accent: #FFD400; /* Gold */
+  --color-accent-hover: #E6BF00;
+  --color-accent-soft: rgba(255, 212, 0, 0.12);
   --font-primary: 'Inter', sans-serif;
   --font-display: 'Space Grotesk', sans-serif;
 }

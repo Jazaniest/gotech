@@ -2,6 +2,7 @@ import { lazy, Suspense, useState } from 'react';
 import './App.css';
 import LenisScroller from './components/LenisScroller.tsx';
 import Loader from './components/Loader.tsx';
+import Navbar from './components/Navbar.tsx';
 import Hero from './components/sections/Hero.tsx';
 import BrandStory from './components/sections/BrandStory.tsx';
 import ProductHighlights from './components/sections/ProductHighlights.tsx';
@@ -30,6 +31,7 @@ function App() {
     <>
       <Loader ready={sceneReady} />
       <LenisScroller />
+      <Navbar />
       <div className="content-container">
         <Hero />
         <BrandStory />

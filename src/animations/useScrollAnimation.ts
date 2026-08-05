@@ -58,7 +58,7 @@ const rolls = [0, -Math.PI / 2, -Math.PI / 2, SPECS_ROLL, GALLERY_ROLL, 0];
 // yang belum pernah dites.
 const CAMERA_CONFIG = {
   desktop: {
-    fov: 45,
+    fov: 47,
     heroDistance: 12,
     brandStory: { cam: [0.7, 0.4, PART_Z.shaft + 0.9] as const, target: [0.2, -0.2, PART_Z.shaft] as const },
     productHighlights: { cam: [1.3, 0.7, PART_Z.point + 2.6] as const, target: [0, 0, PART_Z.point] as const },

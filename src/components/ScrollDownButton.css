@@ -21,7 +21,7 @@
 
 .scroll-down-btn:hover {
   border-color: var(--color-accent);
-  background: rgba(0, 191, 255, 0.12);
+  background: var(--color-accent-soft);
   color: var(--color-accent);
 }
 
