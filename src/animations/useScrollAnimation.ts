@@ -4,7 +4,7 @@ import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-
+import { useBreakpoint } from '../lib/useBreakpoint';
 
 interface UseScrollAnimationProps {
   groupRef: React.RefObject<THREE.Group>;
@@ -32,15 +32,74 @@ const PART_Z = {
   nock: -4,
 };
 
+// Roll kamera per section (radian) - SAMA untuk SEMUA breakpoint,
+// karena ini murni soal komposisi/estetika (arah "atas" kamera), bukan
+// soal muat/tidaknya di layar (itu urusan CAMERA_CONFIG di bawah).
+// Index sejajar sama checkpoints: 0=Hero, 1=BrandStory, 2=ProductHighlights,
+// 3=Specs, 4=Gallery, 5=CTAFooter.
+//
+// -Math.PI dipakai (bukan +Math.PI) buat Specs walau hasilnya identik
+// (180° sama aja mau positif atau negatif) - supaya transisi dari
+// rolls[2] (-90°) ke rolls[3] cuma nempuh 90° (bukan muter 270° kalau
+// pakai +Math.PI), jadi putarannya tetap mulus & searah, nggak
+// "muter balik" tiba-tiba.
+const SPECS_ROLL = -Math.PI;               // 180° - arrow kebalik, jadi "menghadap ke bawah"
+const GALLERY_ROLL = -Math.PI + Math.PI / 6; // sedikit lebih miring dari full-flip - nock keliatan agak miring
+const rolls = [0, -Math.PI / 2, -Math.PI / 2, SPECS_ROLL, GALLERY_ROLL, 0];
+
+// Dua set framing kamera: DESKTOP (angka lama, sudah di-tuning manual)
+// dan MOBILE (layar sempit & portrait, jadi kamera ditarik lebih jauh +
+// offset lateral dikecilkan supaya arrow yang vertikal & 8 arrow
+// dekoratifnya tidak kepotong di tepi layar). Kenapa breakpoint tetap
+// (bukan skala proporsional otomatis): tiap checkpoint di sini adalah
+// hasil tuning manual yang presisi, jadi lebih aman & predictable kalau
+// disediakan 2 set angka yang masing-masing sudah dikalibrasi sendiri,
+// ketimbang satu formula yang mesti "menebak" hasil bagus di ukuran
+// yang belum pernah dites.
+const CAMERA_CONFIG = {
+  desktop: {
+    fov: 45,
+    heroDistance: 12,
+    brandStory: { cam: [0.7, 0.4, PART_Z.shaft + 0.9] as const, target: [0.2, -0.2, PART_Z.shaft] as const },
+    productHighlights: { cam: [1.3, 0.7, PART_Z.point + 2.6] as const, target: [0, 0, PART_Z.point] as const },
+    specs: { cam: [-1.6, 0.9, PART_Z.vanes + 2.8] as const, target: [0, 0, PART_Z.vanes - 0.4] as const },
+    gallery: { cam: [1.2, 0.6, PART_Z.nock + 2.6] as const, target: [0, 0, PART_Z.nock] as const },
+  },
+  tablet: {
+    fov: 50,
+    heroDistance: 14,
+    brandStory: { cam: [0.55, 0.32, PART_Z.shaft + 1.2] as const, target: [0.15, -0.15, PART_Z.shaft] as const },
+    productHighlights: { cam: [1.0, 0.6, PART_Z.point + 3.2] as const, target: [0, 0, PART_Z.point] as const },
+    specs: { cam: [-1.25, 0.72, PART_Z.vanes + 3.4] as const, target: [0, 0, PART_Z.vanes - 0.4] as const },
+    gallery: { cam: [0.9, 0.5, PART_Z.nock + 3.2] as const, target: [0, 0, PART_Z.nock] as const },
+  },
+  mobile: {
+    fov: 58,
+    heroDistance: 16,
+    brandStory: { cam: [0.95, 0.25, PART_Z.shaft + 1.6] as const, target: [0.1, -0.1, PART_Z.shaft] as const },
+    productHighlights: { cam: [1.5, 0.45, PART_Z.point + 3.8] as const, target: [0, 0, PART_Z.point] as const },
+    specs: { cam: [-0.9, 0.55, PART_Z.vanes + 4.0] as const, target: [0, 0, PART_Z.vanes - 0.4] as const },
+    gallery: { cam: [0.65, 0.4, PART_Z.nock + 3.8] as const, target: [0, 0, PART_Z.nock] as const },
+  },
+};
+
 export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vanesRef }: UseScrollAnimationProps) => {
   const { camera } = useThree();
+  const breakpoint = useBreakpoint();
 
   useLayoutEffect(() => {
     if (!groupRef.current) return;
 
+    const config = CAMERA_CONFIG[breakpoint];
+
     const ctx = gsap.context(() => {
       gsap.set(groupRef.current.rotation, BASE_ROTATION);
-      gsap.set(camera.position, { x: 0, y: 0, z: 12 });
+      gsap.set(camera.position, { x: 0, y: 0, z: config.heroDistance });
+
+      if (camera instanceof THREE.PerspectiveCamera) {
+        camera.fov = config.fov;
+        camera.updateProjectionMatrix();
+      }
 
       // Reset pose lokal tiap part balik ke posisi diam secara EKSPLISIT,
       // bukan cuma dibiarkan menunggu ScrollTrigger merender progress
@@ -94,34 +153,25 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
       // checkpoint tetap ini menghilangkan ambiguitas itu sepenuhnya -
       // dari arah manapun discroll, titik awal & akhir tiap section
       // selalu pasti sama.
-      // Roll kamera per section (radian). Cuma BrandStory yang diisi -
-      // supaya SEKILAS PANDANG arrow-nya kelihatan MIRING dari pojok
-      // kiri-atas ke kanan-bawah (sesuai request), padahal arrow-nya
-      // sendiri tetap tegak lurus vertikal (tidak diubah rotasinya).
-      // Section lain roll=0 (kembali tegak), jadi transisinya otomatis
-      // muter balik ke tegak begitu BrandStory discroll lewat.
-      // const BRAND_STORY_ROLL = ;
-      const rolls = [0, -Math.PI / 2, -Math.PI / 2, 0, 0, 0];
-
       const checkpoints = [
-        { cam: { x: 0, y: 0, z: 12 }, target: { x: 0, y: 0, z: 0 } }, // 1. Hero
+        { cam: { x: 0, y: 0, z: config.heroDistance }, target: { x: 0, y: 0, z: 0 } }, // 1. Hero
         {
-          cam: localToWorld(0.7, 0.4, PART_Z.shaft + 0.9),
-          target: localToWorld(0.2, -0.2, PART_Z.shaft),
+          cam: localToWorld(config.brandStory.cam[0], config.brandStory.cam[1], config.brandStory.cam[2]),
+          target: localToWorld(config.brandStory.target[0], config.brandStory.target[1], config.brandStory.target[2]),
         }, // 2. BrandStory - close-up dekat ke tengah shaft (carbon core)
         {
-          cam: localToWorld(1.3, 0.7, PART_Z.point + 2.6),
-          target: localToWorld(0, 0, PART_Z.point),
+          cam: localToWorld(config.productHighlights.cam[0], config.productHighlights.cam[1], config.productHighlights.cam[2]),
+          target: localToWorld(config.productHighlights.target[0], config.productHighlights.target[1], config.productHighlights.target[2]),
         }, // 3. ProductHighlights - dorong dekat ke ujung point
         {
-          cam: localToWorld(-1.6, 0.9, PART_Z.vanes + 2.8),
-          target: localToWorld(0, 0, PART_Z.vanes - 0.4),
+          cam: localToWorld(config.specs.cam[0], config.specs.cam[1], config.specs.cam[2]),
+          target: localToWorld(config.specs.target[0], config.specs.target[1], config.specs.target[2]),
         }, // 4. Specs - close-up ke vanes dengan sudut miring
         {
-          cam: localToWorld(1.2, 0.6, PART_Z.nock + 2.6),
-          target: localToWorld(0, 0, PART_Z.nock),
+          cam: localToWorld(config.gallery.cam[0], config.gallery.cam[1], config.gallery.cam[2]),
+          target: localToWorld(config.gallery.target[0], config.gallery.target[1], config.gallery.target[2]),
         }, // 5. Gallery - close-up ke nock
-        { cam: { x: 0, y: 0, z: 12 }, target: { x: 0, y: 0, z: 0 } }, // 6. CTAFooter - balik ke pose awal
+        { cam: { x: 0, y: 0, z: config.heroDistance }, target: { x: 0, y: 0, z: 0 } }, // 6. CTAFooter - balik ke pose awal
       ];
 
       // Satu ScrollTrigger per section, trigger-nya elemen section itu
@@ -208,5 +258,5 @@ export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vane
     });
 
     return () => ctx.revert();
-  }, [groupRef, shaftRef, pointRef, nockRef, vanesRef, camera]);
+  }, [groupRef, shaftRef, pointRef, nockRef, vanesRef, camera, breakpoint]);
 };
