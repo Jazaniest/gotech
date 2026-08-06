@@ -24,7 +24,7 @@ import {
 // disederhanakan) supaya panah dekoratif di Hero identik bentuknya dengan
 // panah utama. Bedanya cuma: tidak ada ref per-bagian (shaft/point/vanes/
 // nock) karena panah dekoratif ini tidak butuh animasi "explode" seperti
-// panah utama — cuma digerakkan sebagai satu kesatuan lewat group terluar
+// panah utama - cuma digerakkan sebagai satu kesatuan lewat group terluar
 // (lihat useHeroArrowsAnimation.ts).
 //
 // Geometry & texture DIBAGI dari arrowAssets.ts (dibuat sekali, di-reuse
@@ -121,7 +121,7 @@ const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
           })}
         </group>
 
-        {/* Nock — TIDAK pakai `transmission` (dihapus, lihat catatan di
+        {/* Nock - TIDAK pakai `transmission` (dihapus, lihat catatan di
            Arrow.tsx) - jauh lebih murah, apalagi ini dikali 6 instance
            dekoratif sekaligus. */}
         <group position={[0, 0, -4]} rotation-x={Math.PI / 2}>

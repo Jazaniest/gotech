@@ -60,7 +60,7 @@ export const labelGeometry = new THREE.CylinderGeometry(
   LABEL_ARC
 );
 
-// Arrowhead — satu profil lathe di-revolve 360°.
+// Arrowhead - satu profil lathe di-revolve 360°.
 export const pointGeometry = new THREE.LatheGeometry(
   [
     new THREE.Vector2(SHAFT_RADIUS, -0.15),
@@ -71,7 +71,7 @@ export const pointGeometry = new THREE.LatheGeometry(
   32
 );
 
-// Vane — profil low-arch dari SplineCurve (Catmull-Rom).
+// Vane - profil low-arch dari SplineCurve (Catmull-Rom).
 export const vaneGeometry = (() => {
   const L = VANE_LENGTH;
   const H = VANE_HEIGHT;

@@ -23,3 +23,51 @@ html.is-loading,
 html.is-loading body {
   overflow: hidden;
 }
+
+/*
+  Kontras teks di atas scene 3D TANPA menutupi arrow di baliknya.
+
+  Pakai soft halo (text-shadow berlapis beberapa radius) + outline tipis
+  khusus untuk heading besar - BUKAN panel/background di belakang teks.
+  Kenapa: panel/blur selalu "kebaca" sebagai kotak yang menutupi,
+  walau setipis apapun. Halo bayangan gelap di sekitar tiap huruf jauh
+  lebih menyatu - dia beradaptasi ke warna apapun yang lewat di
+  baliknya (metallic gold arrow atau carbon gelap), tanpa mengaburkan
+  atau menggelapkan arrow itu sendiri sedikit pun - arrow tetap 100%
+  tajam di seluruh section, termasuk persis di balik huruf.
+
+  Beberapa lapis shadow (bukan cuma 1 blur besar) dipakai supaya
+  falloff-nya halus - dari gelap pekat dekat huruf, melebar jadi makin
+  tipis - bukan satu blob blur yang keras.
+
+  Outline (-webkit-text-stroke + paint-order) HANYA di heading besar,
+  sengaja sangat tipis & transparan (bukan solid hitam pekat) supaya
+  cuma menegaskan tepi huruf, tidak jadi kesan "outline game/meme".
+  Tidak dipakai di teks kecil (paragraf/list) karena stroke di font
+  kecil justru bikin huruf kelihatan buram/dempet.
+*/
+.hero h1,
+.brand-story h2,
+.product-highlights h2,
+.specs h2,
+.nock h2 {
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 0.9),
+    0 0 10px rgba(0, 0, 0, 0.75),
+    0 0 28px rgba(0, 0, 0, 0.55);
+  -webkit-text-stroke: 1px rgba(0, 0, 0, 0.35);
+  paint-order: stroke fill;
+}
+
+.hero p,
+.brand-story p,
+.product-highlights p,
+.specs p,
+.specs li,
+.nock p {
+  text-shadow:
+    0 0 2px rgba(0, 0, 0, 0.85),
+    0 0 8px rgba(0, 0, 0, 0.65),
+    0 0 20px rgba(0, 0, 0, 0.45);
+}
+

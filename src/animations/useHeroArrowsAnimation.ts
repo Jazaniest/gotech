@@ -14,7 +14,7 @@ export interface ArrowSpread {
 
 interface UseHeroArrowsAnimationProps {
   refs: React.RefObject<THREE.Group | null>[];
-  // Posisi "ramai" di Hero — semua panah berbaris rapi & sejajar dengan panah utama.
+  // Posisi "ramai" di Hero - semua panah berbaris rapi & sejajar dengan panah utama.
   spreads: ArrowSpread[];
   // Posisi keluar panggung, dipakai selama section tengah.
   exits: ArrowSpread[];
@@ -29,7 +29,7 @@ interface UseHeroArrowsAnimationProps {
 // mana pun kamera orbit, bukan cuma sejajar dari satu sudut tertentu.
 //
 // 1) Tampil "ramai" berbaris rapi di sekitar panah utama saat Hero pertama kali dilihat.
-// 2) Selama Hero discroll, semua panah geser keluar & mengecil ke 0 —
+// 2) Selama Hero discroll, semua panah geser keluar & mengecil ke 0 -
 //    supaya section BrandStory..Gallery cuma menyisakan panah utama & panah kedua.
 // 3) Selama section Nock (sesaat sebelum Gallery/Pricing/CTAFooter), semua panah
 //    dekoratif ini balik & menyatu lagi ke baris semula, tiba bersamaan saat section Nock berakhir.

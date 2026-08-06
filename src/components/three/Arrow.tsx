@@ -48,7 +48,7 @@ const Arrow = ({ children }: ArrowProps) => {
         />
       </mesh>
 
-      {/* Label — beberapa band tersebar radial, biar kelihatan dari segala sisi */}
+      {/* Label - beberapa band tersebar radial, biar kelihatan dari segala sisi */}
       {Array.from({ length: LABEL_COUNT }).map((_, i) => {
         const angle = (i * 2 * Math.PI) / LABEL_COUNT;
         return (
@@ -66,7 +66,7 @@ const Arrow = ({ children }: ArrowProps) => {
         );
       })}
 
-      {/* Arrowhead — posisi z tetap 4, sama seperti sebelumnya, jadi
+      {/* Arrowhead - posisi z tetap 4, sama seperti sebelumnya, jadi
          timeline scroll di useScrollAnimation.ts tidak perlu diubah. */}
       <mesh
         ref={pointRef}
@@ -77,7 +77,7 @@ const Arrow = ({ children }: ArrowProps) => {
         <meshPhysicalMaterial color="#d9dbe0" roughness={0.15} metalness={1} name="point" />
       </mesh>
 
-      {/* Vanes — sekarang tiap vane punya group sendiri buat penempatan
+      {/* Vanes - sekarang tiap vane punya group sendiri buat penempatan
          radial (rotation-z) di sekeliling shaft, sementara mesh di
          dalamnya diputar rotation-x agar sisi panjangnya mengikuti Z,
          bukan cuma berputar datar di satu titik. */}
@@ -116,7 +116,7 @@ const Arrow = ({ children }: ArrowProps) => {
         })}
       </group>
 
-      {/* Nock — group berisi body + 2 prong, di-posisikan & dirotasi sekali
+      {/* Nock - group berisi body + 2 prong, di-posisikan & dirotasi sekali
    di level group, biar konsisten dengan konvensi arrowhead. Material
    TIDAK pakai `transmission` (dihapus - itu memaksa render pass
    transparency ekstra tiap frame per instance, mahal x8 arrow di scene
