@@ -26,7 +26,17 @@ const EnvironmentReady = ({ onReady }: { onReady?: () => void }) => {
 
 const Scene = ({ onReady }: SceneProps) => {
   return (
-    <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+    // frameloop="demand" - scene ini murni digerakkan scroll (GSAP
+    // ScrollTrigger + Lenis), bukan animasi yang jalan sendiri tiap
+    // frame. Default R3F ("always") me-render terus-menerus 60fps walau
+    // arrow-nya diam menunggu scroll - boros CPU/GPU/baterai terutama
+    // di HP. "demand" bikin canvas cuma re-render saat benar-benar ada
+    // perubahan (lihat invalidate() yang dipanggil di LenisScroller.tsx,
+    // useScrollAnimation.ts, dan useHeroArrowsAnimation.ts setiap kali
+    // scroll/posisi berubah). Perubahan state React (mis. Suspense
+    // resolve) tetap otomatis trigger render tanpa perlu invalidate()
+    // manual - itu urusan internal R3F.
+    <Canvas frameloop="demand" camera={{ position: [0, 0, 10], fov: 45 }}>
       <Lighting />
       <Arrow>
         <SecondaryArrow />
