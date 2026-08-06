@@ -1,4 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Grotesk:wght@700&display=swap');
+/* Font Inter & Space Grotesk sekarang di-load lewat <link> di index.html
+   (preconnect + stylesheet), bukan @import di sini - lihat komentar di
+   index.html untuk alasannya (menghindari 2 round-trip berurutan yang
+   disebabkan @import di dalam CSS). */
 
 :root {
   --color-background: #121212;

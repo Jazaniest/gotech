@@ -36,7 +36,13 @@ const Scene = ({ onReady }: SceneProps) => {
     // scroll/posisi berubah). Perubahan state React (mis. Suspense
     // resolve) tetap otomatis trigger render tanpa perlu invalidate()
     // manual - itu urusan internal R3F.
-    <Canvas frameloop="demand" camera={{ position: [0, 0, 10], fov: 45 }}>
+    // dpr={[1, 2]} - cap devicePixelRatio maksimal 2. Tanpa ini, R3F
+    // pakai window.devicePixelRatio APA ADANYA - banyak HP modern DPR-nya
+    // 3 (kadang lebih), yang berarti fragment shader (termasuk clearcoat
+    // di meshPhysicalMaterial, dipakai di 4 material berbeda x 8 arrow)
+    // dihitung ulang utk ~2.25x lebih banyak pixel dibanding cap di 2 -
+    // padahal secara visual nyaris tak kelihatan bedanya di layar HP.
+    <Canvas frameloop="demand" dpr={[1, 2]} camera={{ position: [0, 0, 10], fov: 45 }}>
       <Lighting />
       <Arrow>
         <SecondaryArrow />
