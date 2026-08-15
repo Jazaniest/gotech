@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import './Navbar.css';
 import { Menu, X } from 'lucide-react';
-import { lenisRef } from '../lib/lenisInstance';
-import type { NavLink } from '../types/components/Navbar';
+import { lenisRef } from '@/lib/lenisInstance';
+import type { NavLink } from '@/types/components/Navbar';
 
 const NAV_LINKS: NavLink[] = [
   { label: 'Beranda', target: '.hero' },

@@ -1,5 +1,5 @@
 import './Nock.css';
-import ScrollDownButton from '../ScrollDownButton';
+import ScrollDownButton from '@/components/ScrollDownButton';
 
 const Nock = () => {
   return (

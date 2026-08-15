@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import type { UseSecondaryArrowAnimationProps } from '../types/animations/SecondaryArrowAnimation';
+import type { UseSecondaryArrowAnimationProps } from '@/types/animations/SecondaryArrowAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
 

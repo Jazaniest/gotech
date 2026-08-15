@@ -3,8 +3,8 @@ import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import { useBreakpoint } from '../lib/useBreakpoint';
-import type { UseScrollAnimationProps } from '../types/animations/ScrollAnimation';
+import { useBreakpoint } from '@/lib/useBreakpoint';
+import type { UseScrollAnimationProps } from '@/types/animations/ScrollAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
 

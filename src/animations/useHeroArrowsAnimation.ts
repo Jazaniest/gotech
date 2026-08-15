@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
-import type { UseHeroArrowsAnimationProps } from '../types/animations/HeroArrowAnimation';
+import type { UseHeroArrowsAnimationProps } from '@/types/animations/HeroArrowAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
 

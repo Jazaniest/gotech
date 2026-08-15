@@ -1,5 +1,5 @@
 import './BrandStory.css';
-import ScrollDownButton from '../ScrollDownButton';
+import ScrollDownButton from '@/components/ScrollDownButton';
 
 const BrandStory = () => {
   return (

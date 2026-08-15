@@ -1,7 +1,7 @@
 import './ScrollDownButton.css';
 import { ChevronDown } from 'lucide-react';
-import { lenisRef } from '../lib/lenisInstance';
-import type { ScrollDownButtonProps } from '../types/components/ScrollDownButton';
+import { lenisRef } from '@/lib/lenisInstance';
+import type { ScrollDownButtonProps } from '@/types/components/ScrollDownButton';
 
 const ScrollDownButton = ({
   target,

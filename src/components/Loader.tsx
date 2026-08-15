@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './Loader.css';
-import type { LoaderProps } from '../types/components/loader.';
+import type { LoaderProps } from '@/types/components/loader.';
 
 const Loader = ({ ready }: LoaderProps) => {
   const [opening, setOpening] = useState(false);

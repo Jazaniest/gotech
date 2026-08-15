@@ -1,5 +1,5 @@
 import './ProductHighlights.css';
-import ScrollDownButton from '../ScrollDownButton';
+import ScrollDownButton from '@/components/ScrollDownButton';
 
 const ProductHighlights = () => {
   return (

@@ -3,7 +3,7 @@ import Lenis from 'lenis';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { invalidate } from '@react-three/fiber';
-import { lenisRef } from '../lib/lenisInstance';
+import { lenisRef } from '@/lib/lenisInstance';
 
 gsap.registerPlugin(ScrollTrigger);
 

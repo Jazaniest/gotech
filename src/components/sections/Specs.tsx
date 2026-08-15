@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
 import gsap from 'gsap';
 import './Specs.css';
-import ScrollDownButton from '../ScrollDownButton';
+import ScrollDownButton from '@/components/ScrollDownButton';
 
 const specs = [
   { label: 'Jumlah Vane', value: 3, unit: '' },

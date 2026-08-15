@@ -1,5 +1,5 @@
 import './Hero.css';
-import ScrollDownButton from '../ScrollDownButton';
+import ScrollDownButton from '@/components/ScrollDownButton';
 
   const Hero = () => {
     return (
