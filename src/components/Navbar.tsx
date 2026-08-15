@@ -55,12 +55,22 @@ const Navbar = () => {
     const el = document.querySelector<HTMLElement>(target);
     if (!el) return;
 
+    const currentIndex = NAV_LINKS.findIndex((link) => link.target === activeTarget);
+    const targetIndex = NAV_LINKS.findIndex((link) => link.target === target);
+
+    const stepDifference = Math.abs(targetIndex - currentIndex) || 1; 
+    const durationPerStep = 2; 
+
+    const calculatedDuration = stepDifference * durationPerStep;
+
     lenisRef.current?.scrollTo(el, {
       offset: 0,
-      duration: 1.4,
+      duration: calculatedDuration,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     });
+
     setIsMenuOpen(false);
-  }, []);
+  }, [activeTarget]);
 
   return (
     <header className={`navbar ${isScrolled ? 'navbar--scrolled' : ''}`}>
