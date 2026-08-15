@@ -6,6 +6,10 @@ import { useBreakpoint } from '../../lib/useBreakpoint';
 
 // Jumlah panah dekoratif TAMBAHAN di luar 2 panah utama (Arrow.tsx +
 // SecondaryArrow.tsx). Total yang kelihatan di Hero = ARROW_COUNT + 2.
+// Saat exit Gallery -> Pricing, panah utama & SecondaryArrow IKUT keluar
+// juga (lihat useScrollAnimation.ts & useSecondaryArrowAnimation.ts),
+// jadi total yang "membelah" keluar = ARROW_COUNT (3 kiri+3 kanan) + 2
+// panah utama (1 kiri+1 kanan) = 4 kiri + 4 kanan.
 const ARROW_COUNT = 6;
 const COLORS = ['#FFD400', '#e4f22e', '#FFD400', '#e4f22e', '#FFD400', '#e4f22e'];
 

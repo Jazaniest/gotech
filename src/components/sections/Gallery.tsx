@@ -5,21 +5,47 @@ import ScrollDownButton from '../ScrollDownButton';
 interface GalleryItem {
   id: string;
   caption: string;
+  imageSrc?: string; // Path file di folder public (misal: '/img/gallery/studio-01.jpeg')
+  alt?: string;
 }
 
-// PENTING: ini masih placeholder. Ganti tiap item di bawah dengan foto
-// produk asli (foto studio, proses produksi, atau uji lapangan) sebelum
-// karya ini dikumpulkan - guidebook mensyaratkan section "Dokumentasi"
-// berisi gambar nyata, bukan placeholder. Cara ganti: import file gambar
-// dari src/assets, lalu render <img src={...} alt="..." /> di dalam
-// .gallery__placeholder menggantikan ikon <ImageIcon />.
 const GALLERY_ITEMS: GalleryItem[] = [
-  { id: 'studio-01', caption: 'Studio Shot - Carbon Core' },
-  { id: 'studio-02', caption: 'Studio Shot - Tungsten Point' },
-  { id: 'process-01', caption: 'Proses Produksi - Vane Assembly' },
-  { id: 'process-02', caption: 'Quality Control - Spin Test' },
-  { id: 'field-01', caption: 'Field Test - Precision Shot' },
-  { id: 'field-02', caption: 'Field Test - Distance Trial' },
+  { 
+    id: 'studio-01', 
+    caption: 'Inti Karbon',
+    imageSrc: '/img/gallery/studio-01.jpeg',
+    alt: 'Dokumentasi Inti Karbon GOTECH'
+  },
+  { 
+    id: 'studio-02', 
+    caption: 'Ujung Stainless',
+    imageSrc: '/img/gallery/studio-02.jpeg',
+    alt: 'Dokumentasi Ujung Stainless Steel'
+  },
+  { 
+    id: 'process-01', 
+    caption: 'Perakitan Vane',
+    imageSrc: '/img/gallery/process-01.jpeg',
+    alt: 'Proses Perakitan Vane Panah'
+  },
+  { 
+    id: 'process-02', 
+    caption: 'Hasil Lapangan',
+    imageSrc: '/img/gallery/process-02.jpeg',
+    alt: 'Uji Lapangan Produk'
+  },
+  { 
+    id: 'process-03', 
+    caption: 'Hasil Lapangan',
+    imageSrc: '/img/gallery/process-03.jpeg',
+    alt: 'Uji Akurasi Lapangan'
+  },
+  { 
+    id: 'process-04', 
+    caption: 'Hasil Lapangan',
+    imageSrc: '/img/gallery/process-04.jpeg',
+    alt: 'Hasil Pengujian Target'
+  },
 ];
 
 const Gallery = () => {
@@ -31,8 +57,28 @@ const Gallery = () => {
       <div className="gallery__grid">
         {GALLERY_ITEMS.map((item) => (
           <figure key={item.id} className="gallery__item">
-            <div className="gallery__placeholder" aria-hidden="true">
-              <ImageIcon size={28} strokeWidth={1.5} />
+            <div className="gallery__image-wrapper">
+              {item.imageSrc ? (
+                <img 
+                  src={item.imageSrc} 
+                  alt={item.alt || item.caption} 
+                  className="gallery__image"
+                  loading="lazy"
+                  onError={(e) => {
+                    // Jika file belum ada di public atau gagal dimuat, tampilkan ikon placeholder
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
+                  }}
+                />
+              ) : null}
+
+              {/* Placeholder fallback */}
+              <div 
+                className={`gallery__placeholder ${item.imageSrc ? 'hidden' : ''}`} 
+                aria-hidden="true"
+              >
+                <ImageIcon size={28} strokeWidth={1.5} />
+              </div>
             </div>
             <figcaption>{item.caption}</figcaption>
           </figure>
@@ -41,6 +87,7 @@ const Gallery = () => {
 
       <ScrollDownButton target=".pricing-section" label="Lihat pilihan harga" />
     </section>
-  )
-}
+  );
+};
+
 export default Gallery;

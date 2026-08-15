@@ -4,8 +4,8 @@ import ScrollDownButton from '../ScrollDownButton';
 const Nock = () => {
   return (
     <section className="nock">
-      <h2>The Perfect Nock</h2>
-      <p>A flawless connection between archer and arrow. Our nock design ensures a consistent, clean release for every single shot.</p>
+      <h2>Nock Sempurna</h2>
+      <p>Koneksi tanpa cacat antara pemanah dan anak panah. Desain nock kami memastikan pelepasan yang konsisten dan bersih untuk setiap bidikan.</p>
       <ScrollDownButton target=".gallery" label="Lihat galeri produk" />
     </section>
   )

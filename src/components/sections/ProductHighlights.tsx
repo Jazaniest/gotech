@@ -4,10 +4,15 @@ import ScrollDownButton from '../ScrollDownButton';
 const ProductHighlights = () => {
   return (
     <section className="product-highlights">
-      <h2>Tungsten Point</h2>
-      <p>Precision-machined tungsten alloy concentrates mass at the very tip, driving deeper penetration and a flatter, more predictable flight path with every shot.</p>
+      <h2>Stainless Point</h2>
+      <p>
+        Ujung berbahan stainless steel yang diproses dengan presisi memberikan
+        keseimbangan bobot, ketahanan, dan konsistensi yang optimal untuk
+        menghasilkan lintasan yang stabil dan akurat di setiap bidikan.
+      </p>
       <ScrollDownButton target=".specs" label="Lihat Spin Wing Vanes" />
     </section>
   )
 }
+
 export default ProductHighlights;

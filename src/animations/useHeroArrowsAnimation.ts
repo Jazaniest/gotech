@@ -33,6 +33,12 @@ interface UseHeroArrowsAnimationProps {
 //    supaya section BrandStory..Gallery cuma menyisakan panah utama & panah kedua.
 // 3) Selama section Nock (sesaat sebelum Gallery/Pricing/CTAFooter), semua panah
 //    dekoratif ini balik & menyatu lagi ke baris semula, tiba bersamaan saat section Nock berakhir.
+// 4) Selama section Gallery discroll (menuju Pricing), panah-panah ini "membelah"
+//    keluar lagi - 3 ke kiri, 3 ke kanan - pola yang sama seperti exit di Hero,
+//    tiba di posisi exit bersamaan saat Gallery selesai / Pricing mulai terpusat.
+//    (Arrow utama & SecondaryArrow ikut "membelah" keluar di saat yang sama -
+//    lihat useScrollAnimation.ts & useSecondaryArrowAnimation.ts - jadi total
+//    yang terlihat keluar panggung serentak = 4 ke kiri, 4 ke kanan.)
 export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAnimationProps) => {
   useLayoutEffect(() => {
     if (refs.some((r) => !r.current)) return;
@@ -87,6 +93,29 @@ export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAn
         ).to(
           group.scale,
           { x: 1, y: 1, z: 1, ease: 'power1.out' },
+          0
+        );
+
+        // Section Gallery discroll (menuju Pricing) -> panah-panah ini
+        // membelah keluar lagi ke posisi exit masing-masing (yang di kiri
+        // CENTER geser ke kiri, yang di kanan geser ke kanan - sama persis
+        // arah/jarak seperti exit di Hero, dipakai ulang dari `exits`),
+        // sambil mengecil ke 0 - tiba bersamaan pas Gallery selesai /
+        // Pricing mulai terpusat di layar.
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: '.gallery',
+            start: 'top top',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }).to(
+          group.position,
+          { x: exit.x, y: exit.y, z: exit.z, ease: 'power1.in' },
+          0
+        ).to(
+          group.scale,
+          { x: 0.001, y: 0.001, z: 0.001, ease: 'power1.in' },
           0
         );
       });

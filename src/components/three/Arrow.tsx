@@ -27,8 +27,20 @@ const Arrow = ({ children }: ArrowProps) => {
   const pointRef = useRef<THREE.Mesh>(null!);
   const nockRef = useRef<THREE.Mesh>(null!);
   const vanesRef = useRef<THREE.Group>(null!);
+  // Group KHUSUS buat bagian visual panah utama (shaft/label/point/vanes/
+  // nock), TERPISAH dari `groupRef` (yang tetap cuma dipakai buat rotasi
+  // BASE_ROTATION, dipakai bareng-bareng oleh children lewat {children}).
+  // Kenapa perlu dipisah: `groupRef` adalah PARENT dari {children}
+  // (SecondaryArrow, HeroArrows) - kalau exit-Gallery digerakkan lewat
+  // `groupRef` langsung, posisi children yang sudah punya offset lokal
+  // sendiri bakal ikut tergeser DOBEL (posisi children ditambah pergeseran
+  // parent). Dengan `visualsRef` sebagai anak dari `groupRef` yang setara
+  // level dengan {children} (bukan pembungkusnya), exit panah utama tetap
+  // independen dari exit dekoratif/kedua, walau ketiganya tetap mewarisi
+  // rotasi BASE_ROTATION yang sama dari `groupRef`.
+  const visualsRef = useRef<THREE.Group>(null!);
 
-  useScrollAnimation({ groupRef, shaftRef, pointRef, nockRef, vanesRef });
+  useScrollAnimation({ groupRef, visualsRef, shaftRef, pointRef, nockRef, vanesRef });
 
   // Semua geometry (shaft/label/point/vane/nock) sekarang di-import dari
   // arrowAssets.ts - dibuat SEKALI di level modul dan di-share ke semua
@@ -36,6 +48,7 @@ const Arrow = ({ children }: ArrowProps) => {
   // useMemo seperti sebelumnya). Lihat catatan lengkap di arrowAssets.ts.
   return (
     <group ref={groupRef}>
+      <group ref={visualsRef}>
       {/* Shaft asli */}
       <mesh ref={shaftRef} position={[0, 0, 0]} rotation-x={Math.PI / 2} geometry={shaftGeometry}>
         <meshPhysicalMaterial
@@ -156,6 +169,7 @@ const Arrow = ({ children }: ArrowProps) => {
             />
           </mesh>
         ))}
+      </group>
       </group>
 
       {children}

@@ -1,50 +1,107 @@
 .cta-footer {
-  padding-bottom: 4rem;
+  padding: 4rem 2rem 2rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
   background-color: #0a0a0a;
+  color: var(--color-text, #ffffff);
+}
+
+.cta-content {
+  margin-bottom: 2.5rem;
 }
 
 .cta-footer h2 {
   font-size: 3rem;
   font-family: 'Space Grotesk', sans-serif;
+  margin-bottom: 1.5rem;
 }
 
-.cta-footer button {
-  background-color: var(--color-accent);
-  color: var(--color-background);
+.cta-button {
+  display: inline-block;
+  background-color: var(--color-accent, #ff4500);
+  color: var(--color-background, #000000);
   border: none;
   padding: 1rem 2rem;
   font-size: 1.2rem;
   font-weight: bold;
   border-radius: 4px;
   cursor: pointer;
-  margin: 1rem 0;
-  transition: background-color 0.2s ease;
+  text-decoration: none;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.cta-footer button:hover {
-  background-color: var(--color-accent-hover);
+.cta-button:hover {
+  background-color: var(--color-accent-hover, #e03e00);
+  transform: translateY(-2px);
+}
+
+.footer-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.footer-location {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  color: #a0a0a0;
+}
+
+.info-icon {
+  color: var(--color-accent, #ff4500);
+}
+
+.social-links {
+  display: flex;
+  gap: 1.5rem;
 }
 
 .social-links a {
-  margin: 0 1rem;
-  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--color-text, #ffffff);
   text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.2s ease;
+}
+
+.social-links a:hover {
+  color: var(--color-accent, #ff4500);
+}
+
+.footer-bottom {
+  border-top: 1px solid #222;
+  width: 100%;
+  max-width: 800px;
+  padding-top: 1.5rem;
+  font-size: 0.875rem;
+  color: #666;
 }
 
 @media (max-width: 768px) {
+  .cta-footer {
+    padding: 3rem 1.5rem 1.5rem;
+  }
+
   .cta-footer h2 {
     font-size: 2rem;
   }
-  .cta-footer button {
+
+  .cta-button {
     padding: 0.8rem 1.6rem;
     font-size: 1rem;
   }
-  .social-links a {
-    margin: 0 0.5rem;
+
+  .social-links {
+    gap: 1rem;
   }
 }

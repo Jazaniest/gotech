@@ -13,14 +13,14 @@ interface NavLink {
 // naratif) karena ini dipakai berulang di navbar, bukan cuma sekali per
 // section.
 const NAV_LINKS: NavLink[] = [
-  { label: 'Home', target: '.hero' },
-  { label: 'Carbon Core', target: '.brand-story' },
-  { label: 'Tungsten Point', target: '.product-highlights' },
-  { label: 'Spin Wing Vanes', target: '.specs' },
+  { label: 'Beranda', target: '.hero' },
+  { label: 'Shaft', target: '.brand-story' },
+  { label: 'Point', target: '.product-highlights' },
+  { label: 'Vanes', target: '.specs' },
   { label: 'Nock', target: '.nock' },
-  { label: 'Gallery', target: '.gallery' },
-  { label: 'Pricing', target: '.pricing-section' },
-  { label: 'Contact', target: '.cta-footer' },
+  { label: 'Dokumentasi', target: '.gallery' },
+  { label: 'Series', target: '.pricing-section' },
+  { label: 'Kontak', target: '.cta-footer' },
 ];
 
 const Navbar = () => {
@@ -84,7 +84,7 @@ const Navbar = () => {
           onClick={() => handleNavClick('.hero')}
           aria-label="Kembali ke atas halaman"
         >
-          GOTECH
+          <img src="/img/logo/gotech-logo-white.png" alt="GoTech Logo" className="navbar__logo-img" />
         </button>
 
         <nav className="navbar__links" aria-label="Navigasi utama">

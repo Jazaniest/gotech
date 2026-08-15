@@ -1,3 +1,4 @@
+/* Specs.css */
 .specs {
   position: relative;
   height: 100vh;
@@ -5,32 +6,57 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+  padding: 0 2rem;
 }
+
 .specs h2 {
   font-size: 4rem;
   font-family: 'Space Grotesk', sans-serif;
 }
+
+.specs p {
+  max-width: 600px;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  color: #b3b3b3;
+}
+
 .specs ul {
   list-style: none;
   padding: 0;
+  margin: 2rem 0; /* Memberi jarak atas & bawah yang konsisten */
   font-size: 1.5rem;
+  width: min(400px, 90vw); /* Pindahkan kontrol lebar ke ul agar terpusat sempurna */
 }
+
 .specs li {
   display: flex;
   justify-content: space-between;
-  width: min(400px, 90vw);
-  padding: 0.5rem 0;
+  align-items: center; /* KUNCI 1: Menyejajarkan label & value secara vertikal */
+  width: 100%;
+  padding: 0.75rem 0;
   border-bottom: 1px solid #2a2a2a;
+  text-align: left; /* Mencegah style text-align: center dari parent merusak alur */
 }
+
 .spec-value {
   color: var(--color-accent);
   font-weight: bold;
+  text-align: right; /* KUNCI 2: Memastikan angka/teks value rata kanan */
+  display: inline-block; /* Mencegah pergeseran tata letak saat diproses GSAP */
+  will-change: transform, opacity; /* Optimasi performa animasi GSAP */
 }
 
 @media (max-width: 768px) {
   .specs h2 {
     font-size: 2.5rem;
   }
+
+  .specs p {
+    font-size: 1rem;
+  }
+
   .specs ul {
     font-size: 1.1rem;
   }

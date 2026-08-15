@@ -2,22 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" href="/img/logo/gotech-logo-black.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--
-      Font di-load lewat <link> di sini (bukan @import di index.css).
-      @import di dalam CSS itu render-blocking secara berantai: browser
-      harus request+parse index.css DULU sebelum tau font apa yang perlu
-      di-fetch, baru mulai request font-nya - 2 round-trip berurutan.
-      <link> di <head> di-discover browser sejak awal parsing HTML,
-      jalan PARALEL dengan request CSS/JS lain, bukan menunggu di
-      belakangnya.
-
-      preconnect ke fonts.googleapis.com & fonts.gstatic.com (domain beda
-      buat font file aktualnya) supaya DNS lookup + TLS handshake ke
-      kedua origin itu sudah selesai duluan, sebelum browser tau butuh
-      resource dari sana.
-    -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

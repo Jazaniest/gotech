@@ -8,6 +8,7 @@ import { useBreakpoint } from '../lib/useBreakpoint';
 
 interface UseScrollAnimationProps {
   groupRef: React.RefObject<THREE.Group>;
+  visualsRef: React.RefObject<THREE.Group>;
   shaftRef: React.RefObject<THREE.Mesh>;
   pointRef: React.RefObject<THREE.Mesh>;
   nockRef: React.RefObject<THREE.Mesh>;
@@ -83,7 +84,14 @@ const CAMERA_CONFIG = {
   },
 };
 
-export const useScrollAnimation = ({ groupRef, shaftRef, pointRef, nockRef, vanesRef }: UseScrollAnimationProps) => {
+// Jarak keluar panggung arrow UTAMA pas exit Gallery -> Pricing (sumbu X
+// lokal, menjauh ke KIRI dari center). Nilainya sama dengan EXIT_DISTANCE
+// punya panah dekoratif di HeroArrows.tsx, supaya kecepatan "terbang
+// keluar" antara arrow utama dan panah dekoratif terasa senada, tiba
+// bersamaan pas Gallery selesai / Pricing mulai terpusat.
+const MAIN_EXIT_DISTANCE = { desktop: 14, tablet: 11, mobile: 8 };
+
+export const useScrollAnimation = ({ groupRef, visualsRef, shaftRef, pointRef, nockRef, vanesRef }: UseScrollAnimationProps) => {
   const { camera } = useThree();
   const breakpoint = useBreakpoint();
 
