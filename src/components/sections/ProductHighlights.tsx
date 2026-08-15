@@ -10,7 +10,7 @@ const ProductHighlights = () => {
         keseimbangan bobot, ketahanan, dan konsistensi yang optimal untuk
         menghasilkan lintasan yang stabil dan akurat di setiap bidikan.
       </p>
-      <ScrollDownButton target=".specs" label="Lihat Spin Wing Vanes" />
+      <ScrollDownButton target=".specs" duration={5.0} label="Lihat Spin Wing Vanes" />
     </section>
   )
 }

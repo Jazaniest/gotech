@@ -77,7 +77,7 @@ const Gallery = () => {
         ))}
       </div>
 
-      <ScrollDownButton target=".pricing-section" label="Lihat pilihan harga" />
+      <ScrollDownButton target=".pricing-section" duration={5.0} label="Lihat pilihan harga" />
     </section>
   );
 };

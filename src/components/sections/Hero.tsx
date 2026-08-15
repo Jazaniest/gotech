@@ -6,7 +6,7 @@ import ScrollDownButton from '../ScrollDownButton';
       <section className="hero">
         <h1>GOTECH</h1>
         <p>Presisi dalam Gerakan.</p>
-        <ScrollDownButton target=".brand-story" label="Lihat The Carbon Core" />
+        <ScrollDownButton target=".brand-story" duration={5.0} label="Lihat The Carbon Core" />
       </section>
     )
   }

@@ -1,7 +1,11 @@
 .pricing-section {
   position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 4rem 2rem;
-  margin-bottom: 18rem;
   text-align: center;
 }
 
@@ -48,7 +52,7 @@
   text-align: center;
 }
 
-.pricing-card > p:not(.price) {
+.pricing-card>p:not(.price) {
   font-size: 0.95rem;
   line-height: 1.6;
   color: #b3b3b3;

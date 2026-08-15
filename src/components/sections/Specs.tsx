@@ -48,10 +48,7 @@ const Specs = () => {
         ))}
       </ul>
 
-      <ScrollDownButton
-        target=".nock"
-        label="Lihat The Perfect Nock"
-      />
+      <ScrollDownButton target=".nock" duration={5.0} label="Lihat The Perfect Nock"/>
     </section>
   );
 };
