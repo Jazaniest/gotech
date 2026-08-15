@@ -47,3 +47,7 @@ html.is-loading body {
     0 0 20px rgba(0, 0, 0, 0.45);
 }
 
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
