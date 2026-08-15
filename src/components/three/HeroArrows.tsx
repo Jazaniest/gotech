@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import type * as THREE from 'three';
 import DecorativeArrow from './DecorativeArrow';
-import { useHeroArrowsAnimation, type ArrowSpread } from '../../animations/useHeroArrowsAnimation';
+import { useHeroArrowsAnimation } from '../../animations/useHeroArrowsAnimation';
+import type { ArrowSpread } from '../../types/animations/HeroArrowAnimation';
 import { useBreakpoint } from '../../lib/useBreakpoint';
 
 const ARROW_COUNT = 6;
@@ -26,7 +27,7 @@ const HeroArrows = () => {
     () =>
       Array.from({ length: ARROW_COUNT }, () =>
         React.createRef<THREE.Group>()
-      ),
+      ) as React.RefObject<THREE.Group>[],
     []
   );
 

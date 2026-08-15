@@ -19,12 +19,7 @@ import {
   nockBodyGeometry,
   nockProngGeometry,
 } from './arrowAssets';
-
-interface DecorativeArrowProps {
-  brandLabel?: string;
-  color?: string;
-  vanesRef?: React.RefObject<THREE.Group | null>;
-}
+import type { DecorativeArrowProps } from '../../types/components/three/DecorativeArrow';
 
 const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
   ({ brandLabel = DEFAULT_BRAND_LABEL, color = '#FFD400', vanesRef }, ref) => {

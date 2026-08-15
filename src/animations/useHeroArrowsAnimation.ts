@@ -1,21 +1,9 @@
 import { useLayoutEffect } from 'react';
-import type * as THREE from 'three';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import type { UseHeroArrowsAnimationProps } from '../types/animations/HeroArrowAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
-
-export interface ArrowSpread {
-  x: number;
-  y: number;
-  z: number;
-}
-
-interface UseHeroArrowsAnimationProps {
-  refs: React.RefObject<THREE.Group | null>[];
-  spreads: ArrowSpread[];
-  exits: ArrowSpread[];
-}
 
 export const useHeroArrowsAnimation = ({ refs, spreads, exits }: UseHeroArrowsAnimationProps) => {
   useLayoutEffect(() => {

@@ -5,10 +5,7 @@ import Arrow from './Arrow';
 import SecondaryArrow from './SecondaryArrow';
 import HeroArrows from './HeroArrows';
 import Lighting from './Lighting';
-
-interface SceneProps {
-  onReady?: () => void;
-}
+import type { SceneProps } from '../../types/components/three/Scene';
 
 const EnvironmentReady = ({ onReady }: { onReady?: () => void }) => {
   useEffect(() => {

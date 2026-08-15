@@ -4,15 +4,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { useBreakpoint } from '../lib/useBreakpoint';
-
-interface UseScrollAnimationProps {
-  groupRef: React.RefObject<THREE.Group>;
-  visualsRef: React.RefObject<THREE.Group>;
-  shaftRef: React.RefObject<THREE.Mesh>;
-  pointRef: React.RefObject<THREE.Mesh>;
-  nockRef: React.RefObject<THREE.Mesh>;
-  vanesRef: React.RefObject<THREE.Group>;
-}
+import type { UseScrollAnimationProps } from '../types/animations/ScrollAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
 

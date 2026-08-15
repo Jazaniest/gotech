@@ -1,13 +1,7 @@
 import './Gallery.css';
 import { ImageIcon } from 'lucide-react';
 import ScrollDownButton from '../ScrollDownButton';
-
-interface GalleryItem {
-  id: string;
-  caption: string;
-  imageSrc?: string;
-  alt?: string;
-}
+import type { GalleryItem } from '../../types/components/sections/Gallery';
 
 const GALLERY_ITEMS: GalleryItem[] = [
   { 

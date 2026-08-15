@@ -2,11 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import './Navbar.css';
 import { Menu, X } from 'lucide-react';
 import { lenisRef } from '../lib/lenisInstance';
-
-interface NavLink {
-  label: string;
-  target: string;
-}
+import type { NavLink } from '../types/components/Navbar';
 
 const NAV_LINKS: NavLink[] = [
   { label: 'Beranda', target: '.hero' },

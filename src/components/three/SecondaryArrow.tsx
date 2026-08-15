@@ -2,12 +2,7 @@ import { useRef } from 'react';
 import type * as THREE from 'three';
 import DecorativeArrow from './DecorativeArrow';
 import { useSecondaryArrowAnimation } from '../../animations/useSecondaryArrowAnimation';
-
-interface SecondaryArrowProps {
-  xOffset?: number;
-  yOffset?: number;
-  zOffset?: number;
-}
+import type { SecondaryArrowProps } from '../../types/components/three/SecondaryArrow';
 
 const SecondaryArrow = ({ xOffset = 0.3, yOffset = 0, zOffset = 0 }: SecondaryArrowProps) => {
   const groupRef = useRef<THREE.Group>(null!);

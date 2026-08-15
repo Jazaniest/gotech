@@ -1,11 +1,7 @@
 import './ScrollDownButton.css';
 import { ChevronDown } from 'lucide-react';
 import { lenisRef } from '../lib/lenisInstance';
-
-interface ScrollDownButtonProps {
-  target: string;
-  label?: string;
-}
+import type { ScrollDownButtonProps } from '../types/components/ScrollDownButton';
 
 const ScrollDownButton = ({ target, label = 'Scroll ke section berikutnya' }: ScrollDownButtonProps) => {
   const handleClick = () => {

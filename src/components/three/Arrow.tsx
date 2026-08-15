@@ -16,10 +16,7 @@ import {
   nockBodyGeometry,
   nockProngGeometry,
 } from './arrowAssets';
-
-interface ArrowProps {
-  children?: React.ReactNode;
-}
+import type { ArrowProps } from '../../types/components/three/Arrow';
 
 const Arrow = ({ children }: ArrowProps) => {
   const groupRef = useRef<THREE.Group>(null!);
@@ -106,7 +103,7 @@ const Arrow = ({ children }: ArrowProps) => {
           );
         })}
       </group>
-      
+
       <group ref={nockRef} position={[0, 0, -4]} rotation-x={Math.PI / 2}>
         <mesh geometry={nockBodyGeometry}>
           <meshPhysicalMaterial

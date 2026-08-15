@@ -1,17 +1,9 @@
 import { useLayoutEffect } from 'react';
-import type * as THREE from 'three';
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
+import type { UseSecondaryArrowAnimationProps } from '../types/animations/SecondaryArrowAnimation';
 
 gsap.registerPlugin(ScrollTrigger);
-
-interface UseSecondaryArrowAnimationProps {
-  groupRef: React.RefObject<THREE.Group | null>;
-  vanesRef: React.RefObject<THREE.Group | null>;
-  xOffset: number;
-  yOffset: number;
-  zOffset: number;
-}
 
 export const useSecondaryArrowAnimation = ({
   groupRef,
