@@ -1,75 +1,92 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# GoTech Landing Page
 
-Currently, two official plugins are available:
+Ini adalah project landing page untuk GoTech, sebuah agensi digital yang berfokus pada pembuatan website modern dan inovatif. Project ini dibuat menggunakan React, Vite, dan TypeScript, serta dianimasikan dengan GSAP dan React Three Fiber untuk pengalaman 3D yang interaktif.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Fitur
 
-## React Compiler
+- **Animasi 3D Interaktif**: Menggunakan `@react-three/fiber` dan `@react-three/drei` untuk menciptakan objek 3D dan lingkungan yang menarik.
+- **Animasi Scroll**: Dibuat dengan `gsap` untuk memberikan transisi yang mulus dan efek visual saat pengguna melakukan scroll.
+- **Smooth Scrolling**: Diimplementasikan dengan `lenis` untuk pengalaman navigasi yang lebih halus.
+- **Desain Modern**: Antarmuka yang bersih dan modern.
+- **Responsive**: Didesain agar dapat diakses di berbagai perangkat, baik desktop maupun mobile.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Teknologi yang Digunakan
 
-## Expanding the ESLint configuration
+- [React](https://react.dev/)
+- [Vite](https://vitejs.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Three.js](https://threejs.org/)
+- [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber/getting-started/introduction)
+- [@react-three/drei](https://github.com/pmndrs/drei)
+- [GSAP (GreenSock Animation Platform)](https://gsap.com/)
+- [Lenis](https://lenis.studio/)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Instalasi
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Untuk menjalankan project ini di lingkungan lokal Anda, ikuti langkah-langkah berikut:
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prasyarat
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Pastikan Anda telah menginstal [Node.js](https://nodejs.org/) (disarankan versi LTS).
 
-```
+### Menggunakan PNPM (Direkomendasikan)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Instal pnpm** (jika belum terinstal):
+   ```bash
+   npm install -g pnpm
+   ```
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+2. **Clone repositori**:
+   ```bash
+   git clone https://github.com/Jazaniest/gotech.git
+   cd gotech
+   ```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+3. **Instal dependensi**:
+   ```bash
+   pnpm install
+   ```
 
-```
+4. **Jalankan project**:
+   ```bash
+   pnpm dev
+   ```
+
+### Menggunakan NPM
+
+1. **Clone repositori**:
+   ```bash
+   git clone https://github.com/Jazaniest/gotech.git
+   cd gotech
+   ```
+
+2. **Instal dependensi**:
+   ```bash
+   npm install
+   ```
+
+3. **Jalankan project**:
+   ```bash
+   npm run dev
+   ```
+
+### Menggunakan Yarn
+
+1. **Clone repositori**:
+   ```bash
+   git clone https://github.com/Jazaniest/gotech.git
+   cd gotech
+   ```
+
+2. **Instal dependensi**:
+   ```bash
+   yarn install
+   ```
+
+3. **Jalankan project**:
+   ```bash
+   yarn dev
+   ```
+
+Setelah menjalankan perintah `dev`, buka browser Anda dan akses `http://localhost:5173` (atau port lain yang ditampilkan di terminal) untuk melihat aplikasi.
