@@ -5,7 +5,7 @@ import ScrollDownButton from '../ScrollDownButton';
 interface GalleryItem {
   id: string;
   caption: string;
-  imageSrc?: string; // Path file di folder public (misal: '/img/gallery/studio-01.jpeg')
+  imageSrc?: string;
   alt?: string;
 }
 
@@ -65,14 +65,12 @@ const Gallery = () => {
                   className="gallery__image"
                   loading="lazy"
                   onError={(e) => {
-                    // Jika file belum ada di public atau gagal dimuat, tampilkan ikon placeholder
                     e.currentTarget.style.display = 'none';
                     e.currentTarget.nextElementSibling?.classList.remove('hidden');
                   }}
                 />
               ) : null}
 
-              {/* Placeholder fallback */}
               <div 
                 className={`gallery__placeholder ${item.imageSrc ? 'hidden' : ''}`} 
                 aria-hidden="true"

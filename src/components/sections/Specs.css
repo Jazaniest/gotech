@@ -1,4 +1,3 @@
-/* Specs.css */
 .specs {
   position: relative;
   height: 100vh;
@@ -25,27 +24,27 @@
 .specs ul {
   list-style: none;
   padding: 0;
-  margin: 2rem 0; /* Memberi jarak atas & bawah yang konsisten */
+  margin: 2rem 0;
   font-size: 1.5rem;
-  width: min(400px, 90vw); /* Pindahkan kontrol lebar ke ul agar terpusat sempurna */
+  width: min(400px, 90vw);
 }
 
 .specs li {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* KUNCI 1: Menyejajarkan label & value secara vertikal */
+  align-items: center;
   width: 100%;
   padding: 0.75rem 0;
   border-bottom: 1px solid #2a2a2a;
-  text-align: left; /* Mencegah style text-align: center dari parent merusak alur */
+  text-align: left;
 }
 
 .spec-value {
   color: var(--color-accent);
   font-weight: bold;
-  text-align: right; /* KUNCI 2: Memastikan angka/teks value rata kanan */
-  display: inline-block; /* Mencegah pergeseran tata letak saat diproses GSAP */
-  will-change: transform, opacity; /* Optimasi performa animasi GSAP */
+  text-align: right;
+  display: inline-block;
+  will-change: transform, opacity;
 }
 
 @media (max-width: 768px) {

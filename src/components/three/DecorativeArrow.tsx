@@ -20,18 +20,6 @@ import {
   nockProngGeometry,
 } from './arrowAssets';
 
-// Bentuk di sini SENGAJA disalin persis dari Arrow.tsx (bukan
-// disederhanakan) supaya panah dekoratif di Hero identik bentuknya dengan
-// panah utama. Bedanya cuma: tidak ada ref per-bagian (shaft/point/vanes/
-// nock) karena panah dekoratif ini tidak butuh animasi "explode" seperti
-// panah utama - cuma digerakkan sebagai satu kesatuan lewat group terluar
-// (lihat useHeroArrowsAnimation.ts).
-//
-// Geometry & texture DIBAGI dari arrowAssets.ts (dibuat sekali, di-reuse
-// ke semua instance) - lihat catatan lengkap di file itu. Texture cuma
-// dibuat ULANG kalau brandLabel diisi custom (beda dari default), yang
-// di seluruh scene ini sebenarnya tidak pernah terjadi - jadi di praktiknya
-// SEMUA 8 arrow (termasuk yang dekoratif) berbagi texture yang sama persis.
 interface DecorativeArrowProps {
   brandLabel?: string;
   color?: string;
@@ -48,7 +36,7 @@ const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
     );
     const brandTexture = useMemo(
       () => (isDefaultLabel ? sharedBrandTexture : createVaneBrandTexture(DEFAULT_VANE_LABEL)),
-      [isDefaultLabel, brandLabel]
+      [isDefaultLabel]
     );
 
     return (
@@ -121,9 +109,7 @@ const DecorativeArrow = forwardRef<THREE.Group, DecorativeArrowProps>(
           })}
         </group>
 
-        {/* Nock - TIDAK pakai `transmission` (dihapus, lihat catatan di
-           Arrow.tsx) - jauh lebih murah, apalagi ini dikali 6 instance
-           dekoratif sekaligus. */}
+        {/* Nock */}
         <group position={[0, 0, -4]} rotation-x={Math.PI / 2}>
           <mesh geometry={nockBodyGeometry}>
             <meshPhysicalMaterial

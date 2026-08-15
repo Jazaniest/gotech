@@ -1,8 +1,3 @@
-/* Font Inter & Space Grotesk sekarang di-load lewat <link> di index.html
-   (preconnect + stylesheet), bukan @import di sini - lihat komentar di
-   index.html untuk alasannya (menghindari 2 round-trip berurutan yang
-   disebabkan @import di dalam CSS). */
-
 :root {
   --color-background: #121212;
   --color-text: #E0E0E0;
@@ -27,28 +22,6 @@ html.is-loading body {
   overflow: hidden;
 }
 
-/*
-  Kontras teks di atas scene 3D TANPA menutupi arrow di baliknya.
-
-  Pakai soft halo (text-shadow berlapis beberapa radius) + outline tipis
-  khusus untuk heading besar - BUKAN panel/background di belakang teks.
-  Kenapa: panel/blur selalu "kebaca" sebagai kotak yang menutupi,
-  walau setipis apapun. Halo bayangan gelap di sekitar tiap huruf jauh
-  lebih menyatu - dia beradaptasi ke warna apapun yang lewat di
-  baliknya (metallic gold arrow atau carbon gelap), tanpa mengaburkan
-  atau menggelapkan arrow itu sendiri sedikit pun - arrow tetap 100%
-  tajam di seluruh section, termasuk persis di balik huruf.
-
-  Beberapa lapis shadow (bukan cuma 1 blur besar) dipakai supaya
-  falloff-nya halus - dari gelap pekat dekat huruf, melebar jadi makin
-  tipis - bukan satu blob blur yang keras.
-
-  Outline (-webkit-text-stroke + paint-order) HANYA di heading besar,
-  sengaja sangat tipis & transparan (bukan solid hitam pekat) supaya
-  cuma menegaskan tepi huruf, tidak jadi kesan "outline game/meme".
-  Tidak dipakai di teks kecil (paragraf/list) karena stroke di font
-  kecil justru bikin huruf kelihatan buram/dempet.
-*/
 .hero h1,
 .brand-story h2,
 .product-highlights h2,

@@ -1,20 +1,3 @@
-// arrowAssets.ts
-//
-// Geometry & texture DEFAULT yang dipakai SEMUA arrow di scene (1 utama +
-// 1 kedua + 6 dekoratif = 8 instance total). Sebelumnya tiap instance
-// bikin geometry-nya SENDIRI lewat useMemo di Arrow.tsx/DecorativeArrow.tsx
-// - useMemo cuma cache PER-INSTANCE, bukan di-share antar instance, jadi
-// GPU harus nyimpen 8 salinan buffer geometry yang bentuknya identik.
-//
-// Modul ini dievaluasi SEKALI (module-level, bukan di dalam komponen),
-// jadi geometry & texture di bawah cuma dibuat sekali lalu di-reuse ke
-// semua 8 instance arrow - mengurangi alokasi GPU memory & waktu upload
-// buffer secara signifikan, apalagi geometry-nya (LatheGeometry,
-// ShapeGeometry dari spline 48 titik) tidak murah untuk dihitung.
-//
-// CATATAN: jangan pernah men-dispose() geometry/texture di sini dari
-// komponen manapun - lifetime-nya sengaja selevel modul (sepanjang hidup
-// aplikasi), bukan diikat ke lifecycle satu komponen.
 import * as THREE from 'three';
 import { createShaftLabelTexture } from './shaftLabelTexture';
 import { createVaneBrandTexture } from './vaneBrandTexture';
@@ -39,9 +22,6 @@ const NOCK_PRONG_HEIGHT = 0.16;
 export const NOCK_PRONG_OFFSET = 0.032;
 export const NOCK_PRONG_SPLAY = 0.18;
 
-// Label default ("GOTECH PURE CARBON" di shaft, "GOTECH" di vane brand) -
-// SEMUA 8 arrow di scene ini pakai label default yang sama persis, jadi
-// texture-nya juga di-share lewat konstanta ini.
 export const DEFAULT_BRAND_LABEL = 'GOTECH PURE CARBON';
 export const DEFAULT_VANE_LABEL = 'GOTECH';
 export const sharedLabelTexture = createShaftLabelTexture(DEFAULT_BRAND_LABEL);
@@ -60,7 +40,6 @@ export const labelGeometry = new THREE.CylinderGeometry(
   LABEL_ARC
 );
 
-// Arrowhead - satu profil lathe di-revolve 360°.
 export const pointGeometry = new THREE.LatheGeometry(
   [
     new THREE.Vector2(SHAFT_RADIUS, -0.15),
@@ -71,7 +50,6 @@ export const pointGeometry = new THREE.LatheGeometry(
   32
 );
 
-// Vane - profil low-arch dari SplineCurve (Catmull-Rom).
 export const vaneGeometry = (() => {
   const L = VANE_LENGTH;
   const H = VANE_HEIGHT;

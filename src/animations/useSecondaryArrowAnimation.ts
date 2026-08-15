@@ -1,4 +1,3 @@
-// useSecondaryArrowAnimation.ts
 import { useLayoutEffect } from 'react';
 import type * as THREE from 'three';
 import gsap from 'gsap';
@@ -9,53 +8,11 @@ gsap.registerPlugin(ScrollTrigger);
 interface UseSecondaryArrowAnimationProps {
   groupRef: React.RefObject<THREE.Group | null>;
   vanesRef: React.RefObject<THREE.Group | null>;
-  // Offset di ruang LOKAL shaft utama, biar tidak numpuk/clipping.
-  // X = menyamping dari shaft, Y = naik/turun, Z = maju/mundur sepanjang shaft.
   xOffset: number;
   yOffset: number;
   zOffset: number;
 }
 
-// Panah kedua ini di-render sebagai CHILD dari group panah utama
-// (lihat Arrow.tsx -> {children}), jadi dia otomatis mewarisi
-// BASE_ROTATION & seluruh transform panah utama - selalu "nempel" di
-// sisi shaft ke mana pun kamera orbit antar section, persis kayak
-// panah utama, bukan diam di world-space kayak DecorativeArrow yang
-// jadi kelihatan "kabur/keluar" pas kamera zoom dekat.
-//
-// Karena itu, rotasi di sini HANYA rotasi lokal TAMBAHAN di atas rotasi
-// parent - bukan set ulang BASE_ROTATION (kalau di-set ulang, rotasinya
-// akan dobel/miring).
-//
-// Timeline rotasi lokal Y (grup utuh panah kedua):
-// 1. Hero (0)                -> tegak, identik arrow utama.
-// 2. Hero discroll ke BrandStory -> 180°, jadi berlawanan arah arrow utama.
-// 3. BrandStory discroll ke ProductHighlights -> balik ke 0°, searah lagi
-//    dengan arrow utama, dan tetap begitu sampai section terakhir.
-//
-// Transisi #3 SENGAJA dipasang di trigger '.brand-story' (section
-// SEBELUM ProductHighlights), bukan '.product-highlights' sendiri -
-// mengikuti konvensi yang sama seperti transisi kamera di
-// useScrollAnimation.ts: supaya pose "searah lagi" itu sudah 100%
-// tercapai SEJAK ProductHighlights mulai terpusat di layar, bukan baru
-// selesai pas ProductHighlights sudah mau habis.
-//
-// Vane spin di section Specs: sama seperti vane arrow utama, CUMA
-// berputar di tempat (rotation.z), TIDAK digeser posisinya - supaya
-// tetap nempel di shaft, tidak kelihatan "copot".
-//
-// PENTING - immediateRender: false di SEMUA fromTo() di bawah:
-// tanpa ini, GSAP me-render nilai "from" tween SECARA LANGSUNG saat
-// tween dibuat (perilaku default fromTo), TERPISAH dari evaluasi
-// progress asli oleh ScrollTrigger berdasarkan posisi scroll saat itu.
-// Begitu ScrollTrigger lalu mengevaluasi progress-nya sendiri (yang
-// bisa kepicu SEBELUM layout/scroll-height benar-benar settle pas
-// reload/refresh halaman - lihat catatan LenisScroller-race di
-// useScrollAnimation.ts), dua render itu bisa "balapan" dan yang
-// menang bukan yang seharusnya - persis penyebab bug "kebalik sendiri
-// pas reload, baru benar setelah scroll". immediateRender: false
-// mematikan render otomatis itu, biar SATU-SATUNYA sumber nilai
-// adalah evaluasi progress ScrollTrigger yang sebenarnya.
 export const useSecondaryArrowAnimation = ({
   groupRef,
   vanesRef,
@@ -76,7 +33,6 @@ export const useSecondaryArrowAnimation = ({
         gsap.set(vanesRef.current.rotation, { z: 0 });
       }
 
-      // Hero -> BrandStory: 0 -> 180°
       gsap.timeline({
         scrollTrigger: {
           trigger: '.hero',
@@ -91,7 +47,6 @@ export const useSecondaryArrowAnimation = ({
         0
       );
 
-      // BrandStory -> ProductHighlights: 180° -> 0° (balik searah arrow utama)
       gsap.timeline({
         scrollTrigger: {
           trigger: '.brand-story',
@@ -106,7 +61,6 @@ export const useSecondaryArrowAnimation = ({
         0
       );
 
-      // Specs: vane spin di tempat, sinkron sama arrow utama
       if (vanesRef.current) {
         gsap.timeline({
           scrollTrigger: { trigger: '.specs', start: 'top top', end: 'bottom top', scrub: true },

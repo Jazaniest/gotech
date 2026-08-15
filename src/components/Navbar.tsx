@@ -1,4 +1,3 @@
-// Navbar.tsx
 import { useCallback, useEffect, useState } from 'react';
 import './Navbar.css';
 import { Menu, X } from 'lucide-react';
@@ -9,9 +8,6 @@ interface NavLink {
   target: string;
 }
 
-// Label dibuat singkat (beda dari label ScrollDownButton yang panjang &
-// naratif) karena ini dipakai berulang di navbar, bukan cuma sekali per
-// section.
 const NAV_LINKS: NavLink[] = [
   { label: 'Beranda', target: '.hero' },
   { label: 'Shaft', target: '.brand-story' },
@@ -28,9 +24,6 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeTarget, setActiveTarget] = useState<string>('.hero');
 
-  // Latar navbar menggelap + blur begitu halaman mulai discroll, supaya
-  // teks link tetap terbaca walau section di baliknya terang/berubah-ubah.
-  // Saat masih di paling atas (di atas Hero), navbar dibiarkan transparan.
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 40);
     handleScroll();
@@ -38,8 +31,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Scroll-spy sederhana pakai IntersectionObserver: nandain link mana yang
-  // "aktif" sesuai section yang lagi berada di area tengah viewport.
   useEffect(() => {
     const sections = NAV_LINKS
       .map((link) => document.querySelector<HTMLElement>(link.target))

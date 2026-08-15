@@ -1,4 +1,3 @@
-// useBreakpoint.ts
 import { useEffect, useState } from 'react';
 
 export type Breakpoint = 'mobile' | 'tablet' | 'desktop';
@@ -13,10 +12,6 @@ const getBreakpoint = (): Breakpoint => {
   return 'desktop';
 };
 
-// Breakpoint reaktif tunggal buat semua penyesuaian responsive di scene
-// Three.js (posisi checkpoint kamera, sebaran arrow dekoratif, dst).
-// 3 kelas (mobile/tablet/desktop) - lihat catatan di useScrollAnimation.ts
-// kenapa breakpoint tetap dipilih ketimbang skala proporsional real-time.
 export const useBreakpoint = (): Breakpoint => {
   const [breakpoint, setBreakpoint] = useState<Breakpoint>(getBreakpoint);
 

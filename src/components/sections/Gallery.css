@@ -47,9 +47,6 @@
   transform: translateY(-4px);
 }
 
-/* === TAMBAHAN / PENYESUAIAN UNTUK GAMBAR REAL === */
-
-/* Wrapper pembungkus gambar agar rasio tetap 4:3 */
 .gallery__image-wrapper {
   position: relative;
   width: 100%;
@@ -58,20 +55,18 @@
   background-color: rgba(255, 255, 255, 0.02);
 }
 
-/* Tag img asli */
 .gallery__image {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Mencegah foto gepeng/terdistorsi */
+  object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
 }
 
 .gallery__item:hover .gallery__image {
-  transform: scale(1.04); /* Efek zoom halus saat hover */
+  transform: scale(1.04);
 }
 
-/* Styling placeholder Anda (tetap dipertahankan saat foto belum/gagal dimuat) */
 .gallery__placeholder {
   width: 100%;
   height: 100%;
@@ -91,8 +86,6 @@
 .gallery__placeholder.hidden {
   display: none;
 }
-
-/* ============================================= */
 
 .gallery__item figcaption {
   padding: 0.75rem 1rem;

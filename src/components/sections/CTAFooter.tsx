@@ -1,7 +1,6 @@
 import './CTAFooter.css';
 import { MapPin, Phone } from 'lucide-react';
 
-// SVG Icon Kustom untuk TikTok (Lucide tidak menyediakannya secara default)
 const TikTokIcon = ({ size = 20, className = '' }) => (
   <svg
     width={size}

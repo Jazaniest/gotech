@@ -12,20 +12,9 @@ import Gallery from './components/sections/Gallery.tsx';
 import Pricing from './components/sections/Pricing.tsx';
 import CTAFooter from './components/sections/CTAFooter.tsx';
 
-// Dynamic import - Three.js/@react-three/fiber/drei (kontributor utama
-// ukuran bundle) jadi chunk JS TERPISAH yang di-download & di-parse
-// SETELAH kode utama React sudah jalan, bukan ikut memblokir bundle
-// awal. Chunk ini tetap besar (memang berat, sifat library 3D), tapi
-// sekarang tidak menghalangi apapun selain Scene itu sendiri - dan
-// selama chunk ini masih diunduh, tirai (Loader) tetap menutup layar
-// karena sceneReady masih false, jadi user tidak lihat apa-apa yang
-// aneh, cuma tirai sedikit lebih lama sebelum kebuka.
 const Scene = lazy(() => import('./components/three/Scene.tsx'));
 
 function App() {
-  // false di awal - Loader menutup layar sampai Scene (arrow + environment
-  // map) benar-benar siap, baru dibuka. Jadi tidak ada lagi arrow yang
-  // "pop-in" belakangan atau kelihatan flat sesaat sebelum HDR selesai.
   const [sceneReady, setSceneReady] = useState(false);
 
   return (
