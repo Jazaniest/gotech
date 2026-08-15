@@ -71,7 +71,7 @@ const Navbar = () => {
           onClick={() => handleNavClick('.hero')}
           aria-label="Kembali ke atas halaman"
         >
-          <img src="/img/logo/gotech-logo-white.png" alt="GoTech Logo" className="navbar__logo-img" />
+          <img src="/img/logo/gotech-logo-white.svg" alt="GoTech Logo" className="navbar__logo-img" />
         </button>
 
         <nav className="navbar__links" aria-label="Navigasi utama">
