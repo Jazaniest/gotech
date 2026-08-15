@@ -7,37 +7,37 @@ const GALLERY_ITEMS: GalleryItem[] = [
   { 
     id: 'studio-01', 
     caption: 'Inti Karbon',
-    imageSrc: '/img/gallery/studio-01.jpeg',
+    imageSrc: '/img/gallery/studio-01.webp',
     alt: 'Dokumentasi Inti Karbon GOTECH'
   },
   { 
     id: 'studio-02', 
     caption: 'Ujung Stainless',
-    imageSrc: '/img/gallery/studio-02.jpeg',
+    imageSrc: '/img/gallery/studio-02.webp',
     alt: 'Dokumentasi Ujung Stainless Steel'
   },
   { 
     id: 'process-01', 
     caption: 'Perakitan Vane',
-    imageSrc: '/img/gallery/process-01.jpeg',
+    imageSrc: '/img/gallery/process-01.webp',
     alt: 'Proses Perakitan Vane Panah'
   },
   { 
     id: 'process-02', 
     caption: 'Hasil Lapangan',
-    imageSrc: '/img/gallery/process-02.jpeg',
+    imageSrc: '/img/gallery/process-02.webp',
     alt: 'Uji Lapangan Produk'
   },
   { 
     id: 'process-03', 
     caption: 'Hasil Lapangan',
-    imageSrc: '/img/gallery/process-03.jpeg',
+    imageSrc: '/img/gallery/process-03.webp',
     alt: 'Uji Akurasi Lapangan'
   },
   { 
     id: 'process-04', 
     caption: 'Hasil Lapangan',
-    imageSrc: '/img/gallery/process-04.jpeg',
+    imageSrc: '/img/gallery/process-04.webp',
     alt: 'Hasil Pengujian Target'
   },
 ];

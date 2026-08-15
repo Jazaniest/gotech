@@ -61,7 +61,7 @@ const CTAFooter = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} NamaBrand. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} GoTech. All rights reserved.</p>
       </div>
     </footer>
   );
