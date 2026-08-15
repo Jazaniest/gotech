@@ -1,8 +1,6 @@
 
 # GoTech Landing Page
 
-Ini adalah project landing page untuk GoTech, sebuah agensi digital yang berfokus pada pembuatan website modern dan inovatif. Project ini dibuat menggunakan React, Vite, dan TypeScript, serta dianimasikan dengan GSAP dan React Three Fiber untuk pengalaman 3D yang interaktif.
-
 ## Fitur
 
 - **Animasi 3D Interaktif**: Menggunakan `@react-three/fiber` dan `@react-three/drei` untuk menciptakan objek 3D dan lingkungan yang menarik.
